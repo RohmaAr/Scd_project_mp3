@@ -9,6 +9,7 @@ package Model;
  * @author Dell
  */
 import jaco.mp3.player.MP3Player;
+import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -19,14 +20,28 @@ import javax.sound.sampled.Mixer;
 public class Player_M {
     MP3Player player;
     boolean paused=true;
-    boolean loop=false;
-    Songs_M songs=new Songs_M();
-    public Player_M()
+    boolean loop=true;
+    PlayList_M list;
+    Song_M song;
+    public Player_M(Song_M s)
     {
-        player=new MP3Player();
-        for(int i=0;i<songs.songs.size();i++){
-        player.addToPlayList(songs.songs.get(i));
-        }
+        song=s;
+        player=new MP3Player(new File(song.getSongPath()));
+        player=new MP3Player(new File("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
+        
+        System.out.println("PLAYER IS  : "+player.toString());
+    }
+    public Player_M(PlayList_M l)
+    {
+        list=l;
+        song=list.getSongAt(0);
+        player=new MP3Player(new File(song.getSongPath()));
+    }
+    public int getDuration()
+    {
+        int d=song.minutes()*60;
+        d+=song.seconds();
+        return d;
     }
     public void setLoop()
     {
@@ -50,7 +65,12 @@ public class Player_M {
     player.skipBackward();
     }
     public void next(){
-    player.skipForward();
+        if(!list.equals(null))
+        {
+            song=list.nextSongInList(song);
+            player=new MP3Player(new File(song.getSongPath()));
+        }
+        player.play();
     }
     public void volumeDownControl(Double valueToPlusMinus){
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();

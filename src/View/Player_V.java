@@ -8,6 +8,8 @@ import Controller.PlayBack_Volume__C;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Player_V {
     private JFrame frame;
@@ -29,6 +31,10 @@ public class Player_V {
      public void setSong(String s)
      {
          songLabel.setText("Now Playing : "+s);
+     }
+     public void progressSetMax(int m)
+     {
+         progressBar.setMaximum(m);
      }
      public String getSong()
      {
@@ -63,6 +69,16 @@ public class Player_V {
          ImageIcon originalIcon = new ImageIcon(pic);
         play_pause_Button.setIcon(resizeIcon(originalIcon,60,60));
         
+     }
+     public void progressControll(ChangeListener se){
+         progressBar.addChangeListener(se);
+ 
+     }
+     public void progressAdd()
+     {
+         int n=progressBar.getValue();
+         System.out.println(n+"");
+         progressBar.setValue(++n);
      }
      //#C0BCDB
     public Player_V() {
