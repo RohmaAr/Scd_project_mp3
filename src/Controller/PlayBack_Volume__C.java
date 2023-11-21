@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controller;
+import Model.AllSongs_M;
 import Model.Player_M;
-import Model.Song_M;
 import View.Player_V;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,21 +18,34 @@ import javax.swing.event.ChangeListener;
 
 public class PlayBack_Volume__C {
     Player_M player;
-    Player_V playerScreen;
-    public PlayBack_Volume__C(Player_V p)
+    Player_V playerScreen; 
+        int i = 1;
+    public PlayBack_Volume__C(Player_V p,Player_M pm)
     {
-        player=new Player_M(new Song_M("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
+        //player=new Player_M(new Song_M("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
+        if(pm==null){
+            System.out.println("pm is null");
+        AllSongs_M allSongs=new AllSongs_M();
+        player=new Player_M(allSongs);
+        }
+        else
+        {
+            player=pm;
+        }
         playerScreen=p;
-        playerScreen.nextListener(new ActionListener(){
+         playerScreen.setSong(player.getCurrentSong());
+       playerScreen.nextListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e) {player.next();}
+            public void actionPerformed(ActionEvent e) {
+                playerScreen.setSong(player.next());
+                playerScreen.progressReset();
+                i=0;
+            }
         });
         playerScreen.muteListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {player.volumeControl(0.0); }
         });
-        int dura=player.getDuration();
-        playerScreen.progressSetMax(dura);
         playerScreen.playListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) { 
@@ -42,7 +55,10 @@ public class PlayBack_Volume__C {
                     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
     @Override
     protected Void doInBackground() throws Exception {
-        for (int i = 1; i <= dura && !player.isPaused(); i++) {
+        int dura=player.getDuration();
+        playerScreen.progressSetMax(dura);
+        
+        for (; i <= dura && !player.isPaused(); i++) {
             try {
                 Thread.sleep(1000);
                 publish();
@@ -72,7 +88,11 @@ public class PlayBack_Volume__C {
         });
         playerScreen.previousListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e) { player.previous(); }
+            public void actionPerformed(ActionEvent e) {
+                playerScreen.setSong(player.previous());
+            playerScreen.progressReset();
+            i=0;
+            }
         });
         playerScreen.volumeDownListener(new ActionListener(){
             @Override
@@ -88,8 +108,9 @@ public class PlayBack_Volume__C {
             JProgressBar bar=(JProgressBar)e.getSource();
             if(bar.getPercentComplete()==1)
             {
-                System.out.println("Song cOmplete");
+                System.out.println("Song complete");
                 bar.setValue(0);
+                playerScreen.setSong(player.implicitNext());
             }
             };
         

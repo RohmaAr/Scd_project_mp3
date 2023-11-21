@@ -17,6 +17,10 @@ public class PlayList_M {
    {
        songs=new LinkedList<>();
    }
+   public void setPlayListName(String n)
+   {
+       name=n;
+   }
    public void addToPlaylist(Song_M s)
    {
        songs.add(s);
@@ -48,5 +52,15 @@ public class PlayList_M {
            return songs.get(songs.size()-1);
        }
        return songs.get(--i);
+   }
+   public String[][] getSongsData()
+   {
+       String[][] data=new String[songs.size()][2];
+       for(int i=0;i<songs.size();i++){
+           data[i][0]=songs.get(i).songTitle();
+           String t=songs.get(i).minutes()+":"+songs.get(i).seconds();
+           data[i][1]=t;
+       }
+       return data;
    }
 }

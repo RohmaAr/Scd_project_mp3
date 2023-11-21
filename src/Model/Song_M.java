@@ -21,19 +21,9 @@ public class Song_M{
        private File mp3File;
        private int min;
        private int seconds;
-   //String rootDir = "D:\\DELL\\Music\\Free YouTube Downloader";
    public Song_M(String filePath){
        mp3File=new File(filePath);
        duration();
-//       File dir=new File(rootDir);  
-//       File[] files = dir.listFiles();
-//        if (files != null) {
-//            for (File file : files) {
-//                    if (file.getName().toLowerCase().endsWith(".mp3")) {
-//                        songs.add(new File(file.getAbsolutePath()));
-//                }
-//            }
-//        }
    }
    public String getSongPath()
    {
@@ -60,7 +50,7 @@ public class Song_M{
     h = bitstream.readFrame();
     long tn = 0;
     tn = file.getChannel().size();
-    System.out.println( h.total_ms((int) tn)/1000);
+    System.out.println( "Insongs duration "+h.total_ms((int) tn)/1000);
     float totalSeconds=h.total_ms((int) tn)/1000;
     min=(int)totalSeconds/60;
     seconds=(int)totalSeconds%60;

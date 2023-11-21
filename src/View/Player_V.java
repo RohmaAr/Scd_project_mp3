@@ -36,6 +36,10 @@ public class Player_V {
      {
          progressBar.setMaximum(m);
      }
+     public void progressReset()
+     {
+         progressBar.setValue(0);
+     }
      public String getSong()
      {
          return songLabel.getText();
@@ -77,7 +81,6 @@ public class Player_V {
      public void progressAdd()
      {
          int n=progressBar.getValue();
-         System.out.println(n+"");
          progressBar.setValue(++n);
      }
      //#C0BCDB
@@ -104,7 +107,7 @@ public class Player_V {
         //muteButton.setBackground(new Color(0,0,0));
         progressBar = new JProgressBar();
         songLabel = new JLabel("Now Playing: ");
-        new PlayBack_Volume__C(this);
+        //new PlayBack_Volume__C(this,null);
         JPanel top=new JPanel();
         JPanel right=new JPanel();
         top.add(songLabel);

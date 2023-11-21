@@ -20,16 +20,21 @@ import javax.sound.sampled.Mixer;
 public class Player_M {
     MP3Player player;
     boolean paused=true;
-    boolean loop=true;
+    boolean loop=false;
     PlayList_M list;
     Song_M song;
     public Player_M(Song_M s)
     {
+        System.out.println("Song wala Construct for playerM"+s.songTitle());
         song=s;
         player=new MP3Player(new File(song.getSongPath()));
-        player=new MP3Player(new File("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
-        
+       // player=new MP3Player(new File("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
+        list=null;
         System.out.println("PLAYER IS  : "+player.toString());
+    }
+    public String getCurrentSong()
+    {
+        return song.songTitle();
     }
     public Player_M(PlayList_M l)
     {
@@ -46,7 +51,6 @@ public class Player_M {
     public void setLoop()
     {
         loop=!loop;
-        player.setRepeat(loop);
     }
     public void play(){
         paused=false;
@@ -61,16 +65,50 @@ public class Player_M {
     player.pause();
     }
     
-    public void previous(){
-    player.skipBackward();
-    }
-    public void next(){
-        if(!list.equals(null))
+    public String previous(){
+        if(list!=null)
         {
+            player.pause();
+            song=list.prevSongInList(song);
+            player=new MP3Player(new File(song.getSongPath()));
+            player.play();
+            return song.songTitle();
+        }
+        return null;
+    }
+    public String next(){
+        if(list!=null)
+        {
+            player.pause();
             song=list.nextSongInList(song);
             player=new MP3Player(new File(song.getSongPath()));
+            player.play();
+            return song.songTitle();
         }
-        player.play();
+        return null;
+    }
+    public String implicitNext()
+    {
+           player.pause();
+         
+        if(loop==true)
+        {
+            player=new MP3Player(new File(song.getSongPath()));
+            player.play();
+            return song.songTitle();
+        }
+        else
+        {
+            if(list!=null){
+                song=list.nextSongInList(song);
+                player=new MP3Player(new File(song.getSongPath()));
+                player.play();
+                return song.songTitle();
+            }
+            else 
+                return null;
+        }
+        
     }
     public void volumeDownControl(Double valueToPlusMinus){
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
