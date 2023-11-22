@@ -21,12 +21,18 @@ public class PlayList_M {
    {
        name=n;
    }
+   public String getPlayListName()
+   {
+       return name;
+   }
    public void addToPlaylist(Song_M s)
    {
-       songs.add(s);
+       if(!songs.contains(s))
+           songs.add(s);
    }
-   public void removeFromPlaylist(){
-   
+   public void removeFromPlaylist(Song_M s){
+       if(songs.contains(s))
+          songs.remove(s);
    }
    public Song_M getSongAt(int index){
        if(index>=0 && index<songs.size())

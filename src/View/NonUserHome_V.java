@@ -35,17 +35,14 @@ public class NonUserHome_V {
     public NonUserHome_V()
     {
         Container con=frame.getContentPane();
-        new AllHome_C(this);
+        table=new JTable();
         table.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
         table.setRowHeight(40);
-        table.getColumnModel().getColumn(0).setPreferredWidth(300);
-        table.getColumnModel().getColumn(1).setCellRenderer(new RightAlignmentRenderer());
- JScrollPane scroll=new JScrollPane(table);
+        JScrollPane scroll=new JScrollPane(table);
  table.setEnabled(false);
         con.add(scroll,BorderLayout.CENTER);
         frame.setSize(500,600);
        frame.add(new JPanel(),BorderLayout.NORTH);
-        frame.setVisible(true);
     }
     public void setTableActionListener(MouseAdapter ac)
     {
@@ -60,7 +57,14 @@ public class NonUserHome_V {
     {
         String[] col={"Song","Duration"};
         tableModel=new DefaultTableModel(songInfo,col);
-        table=new JTable();
         table.setModel(tableModel);
+        tableEditing();
+    }
+    private void tableEditing()
+    {
+         table.getColumnModel().getColumn(0).setPreferredWidth(300);
+        table.getColumnModel().getColumn(1).setCellRenderer(new RightAlignmentRenderer());
+         frame.setVisible(true);
+    
     }
 }

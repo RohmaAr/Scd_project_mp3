@@ -24,8 +24,8 @@ public class AllHome_C {
     Player_M player;
     Player_V playScreen;
     PlayBack_Volume__C pbv;
-    public AllHome_C(NonUserHome_V h){
-        home=h;
+    public AllHome_C(){
+        home=new NonUserHome_V();
         allSongs=new AllSongs_M();
         String[][] songInfo=allSongs.getSongsData();
         home.populateTable(songInfo);
@@ -34,22 +34,10 @@ public class AllHome_C {
             public void mouseClicked(MouseEvent e){
                 JTable t=(JTable)e.getSource();
                int clicked=t.rowAtPoint(e.getPoint());
-               Song_M songPlay=new Song_M(allSongs.getSongAt(clicked).getSongPath());
+               Song_M songPlay=allSongs.getSongAt(clicked);
                 System.out.println("set song");
                 player=new Player_M(songPlay);
                 playScreen=new Player_V();
-                if(songPlay==null)
-                {
-                    System.out.println("Song play null");
-                }
-                if(player==null)
-                {
-                    System.out.println("playerM play null");
-                }
-                if(playScreen==null)
-                {
-                    System.out.println("playERsCREEN null");
-                }
                 pbv=new PlayBack_Volume__C(playScreen,player);
                 
          }

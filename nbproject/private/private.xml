@@ -9,9 +9,11 @@
             <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/Controller/AllHome_C.java</file>
             <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/Model/PlayList_M.java</file>
             <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/View/NonUserHome_V.java</file>
+            <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/View/LoggedInHome_V.java</file>
             <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/View/Player_V.java</file>
             <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/Model/Player_M.java</file>
             <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/Model/AllSongs_M.java</file>
+            <file>file:/C:/Users/Dell/Documents/NetBeansProjects/MP3Player/src/Controller/UserHome_C.java</file>
         </group>
     </open-files>
 </project-private>
