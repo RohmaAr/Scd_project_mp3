@@ -4,6 +4,7 @@
  */
 package Model;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -49,7 +50,17 @@ public class PlayList_M {
        }
        return songs.get(++i);
    }
-   
+   public Song_M getSongOrDont(String s)
+   {
+       Iterator<Song_M> it=songs.iterator();
+       while(it.hasNext())
+       {
+           Song_M song=it.next();
+           if(song.songTitle().equals(s))
+              return song;
+       }
+       return null;
+   }
    public Song_M prevSongInList(Song_M h)
    {
        int i=songs.indexOf(h);

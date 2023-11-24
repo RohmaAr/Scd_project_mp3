@@ -5,6 +5,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *
@@ -18,6 +19,17 @@ public class User_M {
     public User_M(String n,String p){
         name=n;
         password=p;
+    }
+    public HashSet getAllPlaylistNames(){
+        if(playlists==null || playlists.isEmpty())
+        {
+            return null;
+        }
+        HashSet<String> names=new HashSet<>();
+        for(int i=0;i<playlists.size();i++){
+        names.add(playlists.get(i).getPlayListName());
+        }
+        return names;
     }
     public String getPass()
     {
@@ -37,13 +49,19 @@ public class User_M {
     }
     public void createPlayList(PlayList_M p)
     {
+        if(playlists==null){
+            playlists=new ArrayList<>();
+        }
         playlists.add(p);       
     }
     public void deletePlaylist(PlayList_M P)
     {
+         if(playlists==null){
+             return;
+         }
         playlists.remove(P);
     }
-    public PlayList_M getPlayList(String p)
+    public PlayList_M getPlayListOrNot(String p)
     {
         for(int i=0;i<playlists.size();i++){
          if(playlists.get(i).name.equals(p))

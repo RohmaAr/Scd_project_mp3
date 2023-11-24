@@ -10,11 +10,14 @@ import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
+import java.util.HashSet;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -40,11 +44,15 @@ public class Playlist_V {
     CardLayout layout;
     DefaultTableModel tableModel;
     //JTextField name;
+    HashSet<String> selected=new HashSet<>();
+    HashSet<String> unselected=new HashSet<>();
     JLabel nameFixed;
     JToggleButton edit;
     JPanel top;
     JPanel disabledPanel;
     JPanel enabledPanel;
+    JCheckBox checkBox;
+    JButton saveChanges=new JButton("Save ");
     public Playlist_V()
     {
         frame=new JFrame();
@@ -75,11 +83,22 @@ public class Playlist_V {
         frame.add(cardPanel,BorderLayout.CENTER);
         frame.setVisible(true);
         }
+    public void setTogglefalse()
+    {
+        edit.doClick();
+    }
     public JPanel getCardPanel()
     {
         return cardPanel;
     }
-     
+     public HashSet getDeleted()
+     {
+         return unselected;
+     }
+     public HashSet getAdded()
+     {
+         return selected;
+     }
      public CardLayout getLayout()
      {
          return layout;
@@ -97,16 +116,48 @@ public class Playlist_V {
         table.addMouseListener(ac);
     }
 
-    public void editingPanel(String[][] songNames){
+    public void editingPanel(String[][] songNames,Boolean[] present){
         JPanel p=new JPanel();
         p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
         for(int i=0;i<songNames.length;i++){
-            JCheckBox checkBox=new JCheckBox(songNames[i][0]);
+            checkBox=new JCheckBox(songNames[i][0],present[i]);
+            checkBox.addItemListener(new ItemListener(){
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    saveChanges.setEnabled(true);
+                    if(e.getStateChange()==ItemEvent.SELECTED)  
+                    {
+                        JCheckBox checked=(JCheckBox)e.getSource();
+                        selected.add(checked.getText());
+                        if(unselected.contains(checked.getText()))
+                        {
+                            unselected.remove(checked.getText());
+                        }
+                    }
+                    else if(e.getStateChange()==ItemEvent.DESELECTED)  
+                    {
+                        JCheckBox checked=(JCheckBox)e.getSource();
+                        unselected.add(checked.getText());
+                        if(selected.contains(checked.getText()))
+                        {
+                            selected.remove(checked.getText());
+                        }
+                    }
+                }
+            
+            });
             p.add(checkBox);
             checkBox.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
         }
-        
+        saveChanges.setEnabled(false);
+        JPanel p2=new JPanel();
+        p2.add(saveChanges);
+        enabledPanel.add(p2,BorderLayout.SOUTH);
         enabledPanel.add(new JScrollPane(p),BorderLayout.CENTER);
+    }
+    public void saveListener(ActionListener a)
+    {
+        saveChanges.addActionListener(a);
     }
      class RightAlignmentRenderer extends DefaultTableCellRenderer {
         public RightAlignmentRenderer() {

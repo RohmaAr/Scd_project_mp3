@@ -26,7 +26,7 @@ public class AllHome_C {
     PlayBack_Volume__C pbv;
     public AllHome_C(){
         home=new NonUserHome_V();
-        allSongs=new AllSongs_M();
+        allSongs=AllSongs_M.getAllSongs();
         String[][] songInfo=allSongs.getSongsData();
         home.populateTable(songInfo);
         home.setTableActionListener(new MouseAdapter(){

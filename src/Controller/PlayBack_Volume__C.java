@@ -25,7 +25,7 @@ public class PlayBack_Volume__C {
         //player=new Player_M(new Song_M("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
         if(pm==null){
             System.out.println("pm is null");
-        AllSongs_M allSongs=new AllSongs_M();
+        AllSongs_M allSongs=AllSongs_M.getAllSongs();
         player=new Player_M(allSongs);
         }
         else

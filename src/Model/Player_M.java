@@ -28,7 +28,6 @@ public class Player_M {
         System.out.println("Song wala Construct for playerM"+s.songTitle());
         song=s;
         player=new MP3Player(new File(song.getSongPath()));
-       // player=new MP3Player(new File("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
         list=null;
         System.out.println("PLAYER IS  : "+player.toString());
     }
