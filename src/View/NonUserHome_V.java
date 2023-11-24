@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ import javax.swing.table.TableCellRenderer;
 public class NonUserHome_V {
     JTable table;
     DefaultTableModel tableModel;
+    JButton Login=new JButton("Log In");
     JFrame frame=new JFrame("Home");
     public NonUserHome_V()
     {
@@ -42,7 +44,11 @@ public class NonUserHome_V {
  table.setEnabled(false);
         con.add(scroll,BorderLayout.CENTER);
         frame.setSize(500,600);
-       frame.add(new JPanel(),BorderLayout.NORTH);
+       frame.add(Login,BorderLayout.NORTH);
+    }
+    public void setLoginListener(ActionListener a)
+    {
+        Login.addActionListener(a);
     }
     public void setTableActionListener(MouseAdapter ac)
     {

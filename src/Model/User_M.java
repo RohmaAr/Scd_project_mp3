@@ -15,6 +15,7 @@ public class User_M {
     String name;
     String password;
     PlayList_M likedSongs;
+    ArrayList<String> history;
     ArrayList<PlayList_M> playlists;
     public User_M(String n,String p){
         name=n;
@@ -68,5 +69,8 @@ public class User_M {
              return playlists.get(i); 
         }
         return null;
+    }
+    public void addToHistory(String s){
+        history.add(s);
     }
 }

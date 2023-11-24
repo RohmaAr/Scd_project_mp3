@@ -42,5 +42,9 @@ public class AllHome_C {
                 
          }
         });
+        home.setLoginListener(e->{
+            new LoginRegister_C();
+            player.pause();
+        });
     }
 }

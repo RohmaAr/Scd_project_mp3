@@ -4,12 +4,15 @@
  */
 import Controller.AllHome_C;
 import Controller.LoggedHome_C;
+import Controller.LoginRegister_C;
 import Controller.PlayListManage_C;
 import Model.AllSongs_M;
+import Model.Database_M;
 import Model.PlayList_M;
 import Model.Song_M;
 import Model.User_M;
 import View.LoggedInHome_V;
+import View.LoginRegister_V;
 import View.NonUserHome_V;
 import View.Player_V;
 import View.Playlist_V;
@@ -21,7 +24,7 @@ import javax.swing.SwingUtilities;
 public class Main {
     public static void main(String[] ar)
     {
-        SwingUtilities.invokeLater(() -> {
+        //SwingUtilities.invokeLater(() -> {
             //new Playlist_V();
 //            PlayList_M p=new PlayList_M();
 //            Song_M s=AllSongs_M.getAllSongs().getSongAt(5);
@@ -31,9 +34,11 @@ public class Main {
 //            s=AllSongs_M.getAllSongs().getSongAt(7);
 //            p.addToPlaylist(s);
 //            
-           // new PlayListManage_C(p);
+//           new PlayListManage_C(p);
             //new Player_V();
-            new LoggedHome_C(new User_M("yoooo","HOOOOOO"));
-        });
+            //new LoggedHome_C(new User_M("yoooo","HOOOOOO"));
+           // new LoginRegister_C();
+        //});
+        
     }
 }
