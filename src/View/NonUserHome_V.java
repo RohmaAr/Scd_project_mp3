@@ -44,7 +44,9 @@ public class NonUserHome_V {
  table.setEnabled(false);
         con.add(scroll,BorderLayout.CENTER);
         frame.setSize(500,600);
-       frame.add(Login,BorderLayout.NORTH);
+        JPanel p=new JPanel();
+        p.add(Login);
+       frame.add(p,BorderLayout.NORTH);
     }
     public void setLoginListener(ActionListener a)
     {

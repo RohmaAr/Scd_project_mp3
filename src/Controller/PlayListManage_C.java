@@ -5,9 +5,11 @@
 package Controller;
 
 import Model.AllSongs_M;
+import Model.Database_M;
 import Model.PlayList_M;
 import Model.Player_M;
 import Model.Song_M;
+import Model.User_M;
 import View.Player_V;
 import View.Playlist_V;
 import java.awt.CardLayout;
@@ -32,34 +34,38 @@ public class PlayListManage_C {
     Player_V playScreen;
     AllSongs_M allSongs;
     PlayBack_Volume__C pbv;
-    public PlayListManage_C(PlayList_M pl)
+    User_M user;
+    Database_M database;
+    public PlayListManage_C(User_M use,PlayList_M pl)
     {
+        database=Database_M.getDatabaseConnection();
+        user=use;
         allSongs=AllSongs_M.getAllSongs();
         playlist=pl;
         playlistDisplay=new Playlist_V();
         playlistDisplay.setPlaylistName(playlist.getPlayListName());
        playlistDisplay.setToggle(new ItemListener() {
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        CardLayout layout=playlistDisplay.getLayout();
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-            String[][] songInfo=allSongs.getSongsData();
-            Boolean[] present=new Boolean[songInfo.length];
-            for(int i=0;i<songInfo.length;i++){
-                if(playlist.getSongOrDont(songInfo[i][0])==null)
-                  present[i]=false;
-                else
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            CardLayout layout=playlistDisplay.getLayout();
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                String[][] songInfo=allSongs.getSongsData();
+                Boolean[] present=new Boolean[songInfo.length];
+                for(int i=0;i<songInfo.length;i++){
+                    if(playlist.getSongOrDont(songInfo[i][0])==null)
+                    present[i]=false;
+                    else
                     present[i]=true;
-            }
+                }
             playlistDisplay.editingPanel(songInfo,present);
             layout.show(playlistDisplay.getCardPanel(), "Enabled");
          
-        } else {
+            } else {
             
             layout.show(playlistDisplay.getCardPanel(), "disabled");
+            }
         }
-    }
-});
+        });
        playlistDisplay.saveListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,28 +75,26 @@ public class PlayListManage_C {
                     HashSet<String> remove=playlistDisplay.getDeleted();
                     HashSet<String> add=playlistDisplay.getAdded();
                     System.out.println("ADDED");
-                     Iterator<String> it = add.iterator();
-                    while (it.hasNext()) { 
-                        String songToAdd=it.next();
+                    for (String songToAdd : add) {
                         System.out.println(songToAdd + " "); 
                         Song_M s=allSongs.getSongOrDont(songToAdd);
                         playlist.addToPlaylist(s);
+                        database.dbaddToPlaylist(songToAdd, playlist.getPlayListName());
                     }
-                System.out.println("Deleted");    
-                it = remove.iterator();
-                 while (it.hasNext()) { 
-                    String songToRemove=it.next();
-                    System.out.println(songToRemove + " "); 
-                    Song_M s=allSongs.getSongOrDont(songToRemove);
-                    playlist.removeFromPlaylist(s);
-                }
-                System.out.println("PRINTING NEW TABLE'S INFO");
-                String[][] son=playlist.getSongsData();
-                playlistDisplay.populateTable(son);
-                for(int i=0;i<son.length;i++){
-                    System.out.println(son[i][0]);
-                }
-                playlistDisplay.setTogglefalse();
+                    System.out.println("Deleted");    
+                    for (String songToRemove : remove){
+                        System.out.println(songToRemove + " "); 
+                        Song_M s=allSongs.getSongOrDont(songToRemove);
+                        playlist.removeFromPlaylist(s);
+                        database.dbRemoveSongFromPlaylist(songToRemove, playlist.getPlayListName());
+                    }
+                    System.out.println("PRINTING NEW TABLE'S INFO");
+                    String[][] son=playlist.getSongsData();
+                    playlistDisplay.populateTable(son);
+                    for(int i=0;i<son.length;i++){
+                        System.out.println(son[i][0]);
+                    }
+                    playlistDisplay.setTogglefalse();
                 }
             }
         });
@@ -105,9 +109,18 @@ public class PlayListManage_C {
                 System.out.println("set song");
                 player=new Player_M(songPlay);
                 playScreen=new Player_V();
-                pbv=new PlayBack_Volume__C(playScreen,player);
+                pbv=new PlayBack_Volume__C(user,playScreen,player);
                 
          }
+        });
+        playlistDisplay.setDeleteListener(e->{
+           int choice=JOptionPane.showConfirmDialog(playlistDisplay.getCardPanel(),playlist.getPlayListName()+" will be permanently deleted. Are you sure?", "Confirm Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+           if(choice==JOptionPane.OK_OPTION)
+           {
+               user.deletePlaylist(playlist);
+               database.dbDeletePlaylist(playlist.getPlayListName());
+               new LoggedHome_C(user);
+           }
         });
     }
 }

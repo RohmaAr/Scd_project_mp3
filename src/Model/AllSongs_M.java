@@ -15,6 +15,7 @@ public class AllSongs_M extends PlayList_M{
     static private AllSongs_M thisObject=null;
      private AllSongs_M()
     {
+        this.setPlayListName("Downloads");
         System.out.println("All Songs construct");
        File dir=new File(rootDir);  
        File[] files = dir.listFiles();

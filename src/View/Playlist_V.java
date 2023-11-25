@@ -52,20 +52,24 @@ public class Playlist_V {
     JPanel disabledPanel;
     JPanel enabledPanel;
     JCheckBox checkBox;
+    JButton delete;
     JButton saveChanges=new JButton("Save ");
     public Playlist_V()
     {
         frame=new JFrame();
         frame.setSize(600,600);
-        nameFixed=new JLabel("Random Text");
+        nameFixed=new JLabel();
         nameFixed.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
         nameFixed.setEnabled(false);
         top = new JPanel();
-        top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
         top.add(nameFixed);
         ImageIcon originalIcon = new ImageIcon("Icons\\edit_dark.png");         
         edit=new JToggleButton(resizeIcon(originalIcon,50,50),false);
         top.add(edit);
+        originalIcon = new ImageIcon("Icons\\delete_dark.png");         
+        delete=new JButton();
+        delete.setIcon(resizeIcon(originalIcon,50,50));
+        top.add(delete);
         frame.add(top,BorderLayout.NORTH);
         cardPanel = new JPanel();
         layout=new CardLayout();
@@ -115,6 +119,10 @@ public class Playlist_V {
     {
         table.addMouseListener(ac);
     }
+     public void setDeleteListener(ActionListener a)
+     {
+         delete.addActionListener(a);
+     }
 
     public void editingPanel(String[][] songNames,Boolean[] present){
         JPanel p=new JPanel();

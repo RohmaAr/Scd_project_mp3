@@ -37,7 +37,10 @@ public class Main {
 //           new PlayListManage_C(p);
             //new Player_V();
             //new LoggedHome_C(new User_M("yoooo","HOOOOOO"));
-           // new LoginRegister_C();
+           new LoginRegister_C();
+        //new AllHome_C();
+        //Database_M d=Database_M.getDatabaseConnection();
+        //d.dbDisplayAllTables();
         //});
         
     }

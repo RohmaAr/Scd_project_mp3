@@ -5,6 +5,7 @@
 package Controller;
 
 import Model.AllSongs_M;
+import Model.Database_M;
 import Model.PlayList_M;
 import Model.Song_M;
 import Model.User_M;
@@ -28,11 +29,17 @@ public class LoggedHome_C {
     User_M user;
     LoggedInHome_V home;
     AllSongs_M allSongs;
+    Database_M database;
     PlayListManage_C displayPlaylist;
     public LoggedHome_C(User_M u)
     {
+        database=Database_M.getDatabaseConnection();
         user=u;
         home=new LoggedInHome_V();
+        home.setPlaylistNamesListener(user.getAllPlaylistNames(), new ListenerForPlaylistButtons());
+        home.setPlaylistNames();
+        home.showMain();
+            
         allSongs=AllSongs_M.getAllSongs();
         home.createListener(new ActionListener(){
             @Override
@@ -44,6 +51,13 @@ public class LoggedHome_C {
                     return;
                   
                 }
+                else if(!database.dbUniquePlaylistName(namePlaylist))
+                {
+                  JOptionPane.showMessageDialog(home.getFrame(), "A playlist by this name already exists. Pick another name");
+                    return;
+                    
+                }
+                
                 HashSet<String> songNames=user.getAllPlaylistNames();
                 if(songNames!=null && songNames.contains(namePlaylist))
                 {
@@ -54,39 +68,23 @@ public class LoggedHome_C {
                 songNames=home.getAdded();
                 PlayList_M newPlaylist=new PlayList_M();
                 newPlaylist.setPlayListName(namePlaylist);
-               Iterator<String> it=songNames.iterator();
+                Iterator<String> it=songNames.iterator();
                 while(it.hasNext()){
-                Song_M s=allSongs.getSongOrDont(it.next());
-                newPlaylist.addToPlaylist(s);
-                user.createPlayList(newPlaylist);
+                    Song_M s=allSongs.getSongOrDont(it.next());
+                    newPlaylist.addToPlaylist(s);
                 }
-                songNames.clear();
-                songNames.add(namePlaylist);
-                home.setPlaylistNames(songNames,new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JButton b=(JButton)e.getSource();
-                        PlayList_M playlist=user.getPlayListOrNot(b.getText());
-                        displayPlaylist=new PlayListManage_C(playlist);
-                    }
-                });
-                home.readyCreate(allSongs.getSongsData());
-                home.showMain();
+                user.createPlayList(newPlaylist);
+                database.dbAddAPlaylist(user.getName(), newPlaylist.getPlayListName(), songNames);
+                home.voluntaryBack();
                 }
            }
         });
-        home.setPlaylistNames(user.getAllPlaylistNames(),new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JButton b=(JButton)e.getSource();
-                        PlayList_M playlist=user.getPlayListOrNot(b.getText());
-                        displayPlaylist=new PlayListManage_C(playlist);
-                    }
-                });
         home.readyCreate(allSongs.getSongsData());
         home.backListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                home.setPlaylistNamesListener(user.getAllPlaylistNames(), new ListenerForPlaylistButtons());
+                home.setPlaylistNames();
                 home.showMain();
             }
         
@@ -97,5 +95,22 @@ public class LoggedHome_C {
                 home.showCreate();
             }
         });
+        home.setHistoryListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                home.readyHistoryPanel(user.getHistory());
+                home.showHistory();
+            }
+        });
+    }
+    class ListenerForPlaylistButtons implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton b=(JButton)e.getSource();
+            PlayList_M playlist=user.getPlayListOrNot(b.getText());
+            displayPlaylist=new PlayListManage_C(user,playlist);
+        }
+    
     }
 }

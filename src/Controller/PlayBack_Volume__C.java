@@ -5,6 +5,7 @@
 package Controller;
 import Model.AllSongs_M;
 import Model.Player_M;
+import Model.User_M;
 import View.Player_V;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,9 +21,8 @@ public class PlayBack_Volume__C {
     Player_M player;
     Player_V playerScreen; 
         int i = 1;
-    public PlayBack_Volume__C(Player_V p,Player_M pm)
+    public PlayBack_Volume__C(User_M user,Player_V p,Player_M pm)
     {
-        //player=new Player_M(new Song_M("C:\\Users\\Dell\\Downloads\\x2mate.com - SEVENTEEN (세븐틴) '손오공' Official MV (320 kbps).mp3"));
         if(pm==null){
             System.out.println("pm is null");
         AllSongs_M allSongs=AllSongs_M.getAllSongs();
@@ -51,7 +51,7 @@ public class PlayBack_Volume__C {
             public void actionPerformed(ActionEvent e) { 
                 if(player.isPaused()){
                 player.play();
-                playerScreen.pausePlayIconChange("C:\\Users\\Dell\\Documents\\NetBeansProjects\\MP3Player\\Icons\\pause_dark.png");
+                playerScreen.pausePlayIconChange("Icons\\pause_dark.png");
                     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
     @Override
     protected Void doInBackground() throws Exception {
@@ -80,7 +80,7 @@ public class PlayBack_Volume__C {
                 }else
                 {
                     player.pause();
-                playerScreen.pausePlayIconChange("C:\\Users\\Dell\\Documents\\NetBeansProjects\\MP3Player\\Icons\\play_dark.png");
+                playerScreen.pausePlayIconChange("Icons\\play_dark.png");
                 
                 }
             }

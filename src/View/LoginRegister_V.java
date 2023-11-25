@@ -127,6 +127,9 @@ public class LoginRegister_V {
     
         
     }
+    public JFrame getFrame(){
+        return frame;
+    }
     public String getNewPassword()
     {
         return passwordRegister.getText(); 

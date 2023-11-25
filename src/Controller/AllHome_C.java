@@ -38,7 +38,7 @@ public class AllHome_C {
                 System.out.println("set song");
                 player=new Player_M(songPlay);
                 playScreen=new Player_V();
-                pbv=new PlayBack_Volume__C(playScreen,player);
+                pbv=new PlayBack_Volume__C(null,playScreen,player);
                 
          }
         });

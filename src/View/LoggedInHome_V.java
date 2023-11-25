@@ -7,6 +7,7 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -15,6 +16,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import javax.swing.BoxLayout;
@@ -28,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -37,6 +40,7 @@ public class LoggedInHome_V {
     JFrame frame;
     JPanel playListsPanel;
     JPanel createPlaylist;
+    JPanel historyPanel;
     JToolBar toolBar;
     CardLayout layout=new CardLayout();
     JTextField nameNewPlaylist=new JTextField("Enter Playlist name");
@@ -51,6 +55,8 @@ public class LoggedInHome_V {
     JButton liked=new JButton("Liked");
     JButton newPlaylist=new JButton("New list");
     JLabel person=new JLabel("user");
+    ActionListener playlistButtonListener;
+    HashSet<String> playlistNames;
     public LoggedInHome_V()
     {
         
@@ -84,15 +90,46 @@ public class LoggedInHome_V {
         mainPanel.add(scroll,BorderLayout.CENTER);
         createPlaylist=new JPanel();
         createPlaylist.setLayout(new BorderLayout());
+        historyPanel=new JPanel();
         container.add(mainPanel, "Main");
         container.add(createPlaylist, "Create");
-        showMain();
+        container.add(historyPanel, "History");
         frame.setVisible(true);
         
+    }
+    public void readyHistoryPanel(ArrayList<String> historyInfo)
+    {
+        historyPanel.removeAll();
+        historyPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        if(historyInfo!=null){
+            for(int i=0;i<historyInfo.size();i++){
+                JLabel label=new JLabel(historyInfo.get(i));
+                label.setFont(new Font(Font.SERIF,  Font.PLAIN, 19));
+                historyPanel.add(label);
+            }
+        }
+        else
+        {
+            historyPanel.setLayout(new BorderLayout());
+            JLabel label=new JLabel("No Playback history found",SwingConstants.CENTER);
+                label.setFont(new Font(Font.SERIF,  Font.PLAIN, 19));
+                historyPanel.add(label,BorderLayout.CENTER);
+
+        }
+        
+    }
+    public void setPlaylistNamesListener(HashSet<String> hash,ActionListener ac)
+    {
+        this.playlistNames=hash;
+        this.playlistButtonListener=ac;
     }
     public void showMain()
     {
         layout.show(container, "Main");
+    }
+    public void showHistory()
+    {
+        layout.show(container, "History");
     }
     
     public void showCreate()
@@ -159,28 +196,43 @@ public class LoggedInHome_V {
         p3.setLayout(new BoxLayout(p3,BoxLayout.Y_AXIS));
         p2.add(create);
         p3.add(back);
+        nameNewPlaylist.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 30));
         p3.add(nameNewPlaylist);
         createPlaylist.add(p2,BorderLayout.SOUTH);
         createPlaylist.add(p3,BorderLayout.NORTH);
         createPlaylist.add(new JScrollPane(p),BorderLayout.CENTER);
     }
-    public void setPlaylistNames(HashSet<String> playlistNames,ActionListener a)
+    
+    public void setPlaylistNames()
     {
+        playListsPanel.removeAll();
         if(playlistNames!=null){
         Iterator<String> it=playlistNames.iterator();
         while(it.hasNext()){
             ImageIcon originalIcon = new ImageIcon("Icons\\playlist_dark.png");
-        JButton playlistButton = new JButton(resizeIcon(originalIcon,70,70));         
-        playlistButton.setText(it.next());
-        playlistButton.addActionListener(a);
-           playListsPanel.add(playlistButton);
+            JButton playlistButton = new JButton(resizeIcon(originalIcon,70,70));         
+            playlistButton.setText(it.next());
+            playlistButton.addActionListener(this.playlistButtonListener);
+            playListsPanel.add(playlistButton);
         }
         }
         
+    }
+    public void voluntaryBack()
+    {
+        back.doClick();
     }
      private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImage);
+    }
+    public void setHistoryListener(ActionListener a)
+    {
+        history.addActionListener(a);
+    }
+    public void setLikedListener(ActionListener a)
+    {
+        liked.addActionListener(a);
     }
 }

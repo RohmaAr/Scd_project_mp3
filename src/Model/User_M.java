@@ -32,6 +32,16 @@ public class User_M {
         }
         return names;
     }
+    public ArrayList<PlayList_M> getAllPlaylists(){
+        return playlists;
+    }
+    public ArrayList<String> getHistory()
+    {
+        return history;
+    }
+    public PlayList_M getLikedSongs(){
+        return likedSongs;
+    }
     public String getPass()
     {
         return password;
@@ -42,11 +52,15 @@ public class User_M {
     }
     public void addToLikedSongs(Song_M s)
     {
+        if(likedSongs==null){
+            likedSongs=new PlayList_M();
+        }
         likedSongs.addToPlaylist(s);
     }
     public void removedFromLiked(Song_M s)
     {
-        likedSongs.removeFromPlaylist(s);
+        if(likedSongs!=null)
+            likedSongs.removeFromPlaylist(s);
     }
     public void createPlayList(PlayList_M p)
     {
@@ -71,6 +85,13 @@ public class User_M {
         return null;
     }
     public void addToHistory(String s){
+       if(history==null){
+           history=new ArrayList<>();
+       }
         history.add(s);
+    }
+    public void setHistory(ArrayList<String> h)
+    {
+        history=h;
     }
 }
