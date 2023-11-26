@@ -29,8 +29,9 @@ import java.util.List;
 public class PlayBack_Volume__C {
     Player_M player;
     Player_V playerScreen; 
+    FrontEnd frontEnd;//for lyrics front end by fatima
         int i = 1;
-    public PlayBack_Volume__C(User_M user,Player_V p,Player_M pm)
+    public PlayBack_Volume__C(User_M user,Player_V p,Player_M pm,FrontEnd frontEnd)
     {
         if(pm==null){
             System.out.println("pm is null");
@@ -41,6 +42,7 @@ public class PlayBack_Volume__C {
         {
             player=pm;
         }
+         this.frontEnd = frontEnd;//for lyrics front end by fatima
         playerScreen=p;
          playerScreen.setSong(player.getCurrentSong());
        playerScreen.nextListener(new ActionListener(){
@@ -133,6 +135,7 @@ public class PlayBack_Volume__C {
                 String artist=scan.next();
                 String track=scan.next();
                 System.out.println(artist +" "+track);
+                frontEnd.setArtistAndTrack(artist, track);//for lyrics front end by fatima
                 
                  // Backend logic integrated directly from Fatima
         String apiKey = "9c8638720a5869a6bb9fdebf4a57fe68";
