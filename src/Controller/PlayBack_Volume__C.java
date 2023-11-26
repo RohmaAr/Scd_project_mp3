@@ -10,6 +10,7 @@ import View.Player_V;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JProgressBar;
@@ -115,6 +116,19 @@ public class PlayBack_Volume__C {
             };
         
         });
-        
+        playerScreen.lyricsListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String song=player.getCurrentSong();
+                Scanner scan=new Scanner(song);
+                scan.useDelimiter("-|\\.mp3");
+                String artist=scan.next();
+                String track=scan.next();
+                System.out.println(artist +" "+track);
+                
+                
+            }
+            
+        });
     }
 }

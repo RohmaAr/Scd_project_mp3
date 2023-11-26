@@ -25,6 +25,7 @@ public class Player_V {
     private JLabel songLabel;
     private JButton like;
     private JButton loop;
+    private JButton lyricsButton;
      private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -32,7 +33,7 @@ public class Player_V {
     }
      public void setSong(String s)
      {
-         songLabel.setText("Now Playing : "+s);
+         songLabel.setText(s);
      }
      public void progressSetMax(int m)
      {
@@ -76,6 +77,10 @@ public class Player_V {
         play_pause_Button.setIcon(resizeIcon(originalIcon,60,60));
         
      }
+     public void lyricsListener(ActionListener e)
+     {
+         lyricsButton.addActionListener(e);
+     }
      public void progressControll(ChangeListener se){
          progressBar.addChangeListener(se);
  
@@ -93,7 +98,9 @@ public class Player_V {
         playBackToolBar = new JToolBar();
         volumeToolBar=new JToolBar(JToolBar.VERTICAL);
         playBackToolBar.setBounds(0, 0, 500, 100);
-        ImageIcon originalIcon = new ImageIcon("Icons\\play_light.png");
+        ImageIcon originalIcon = new ImageIcon("Icons\\lyrics_light.png");
+        lyricsButton = new JButton(resizeIcon(originalIcon,50,50));         
+        originalIcon = new ImageIcon("Icons\\play_light.png");
         play_pause_Button = new JButton(resizeIcon(originalIcon,60,60));         
         originalIcon = new ImageIcon("Icons\\volume_up_dark.png");
         volumeUpButton = new JButton(resizeIcon(originalIcon,20,20));
@@ -132,6 +139,7 @@ public class Player_V {
         playBackToolBar.add(like);
         bottom.add(progressBar);
         playBackToolBar.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        volumeToolBar.add(lyricsButton);
         volumeToolBar.add(volumeUpButton);
         volumeToolBar.add(volumeDownButton);
         volumeToolBar.add(muteButton);
