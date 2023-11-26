@@ -166,23 +166,6 @@ public class PlayBack_Volume__C {
             }
             
         });
-        //lyrics extractor by fatima
-        private static String extractLyrics(String json) {
-    int startIndex = json.indexOf("\"lyrics_body\":\"");
-    int endIndex = json.indexOf("\",\"script_tracking_url\"");
-
-    if (startIndex != -1 && endIndex != -1) {
-        String lyrics = json.substring(startIndex + 15, endIndex);
-
-        // Remove the disclaimer line
-        lyrics = lyrics.replaceAll("\\\\n", System.lineSeparator());
-        lyrics = lyrics.replace("******* This Lyrics is NOT for Commercial use *******", "");
-
-        return lyrics.trim();  // Trim any leading/trailing spaces
-    } else {
-        return "Lyrics not found.";
-    }
-}
-    //till there
+        
     }
 }
