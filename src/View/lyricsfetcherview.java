@@ -2,32 +2,35 @@ package lyricsfetcher;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LyricsView {
-    private JFrame frame;
+public class FrontEnd {
     private JTextField artistTextField;
     private JTextField trackTextField;
-    private JButton fetchButton;
-    private JTextArea lyricsDisplay;
-    private JButton goBackButton;
-    private JScrollPane lyricsScrollPane;
 
-    public LyricsView() {
-        initialize();
+    public FrontEnd() {
+        createAndShowGUI();
     }
 
-    private void initialize() {
-        frame = new JFrame("Lyrics Fetcher");
+    private void createAndShowGUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JFrame frame = new JFrame("Lyrics Fetcher");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 10, 5, 10);
+        gbc.insets = new Insets(5, 10, 5, 10); // Set margins
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("<html><font size='5'>🎤 Name of Artist:</font></html>"), gbc);
+        panel.add(new JLabel("<html><font size='5'>🎤 Name of Artist:</font></html>"), gbc); // Microphone icon added
 
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -36,7 +39,7 @@ public class LyricsView {
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(new JLabel("<html><font size='5'>🎵 Title of the Song:</font></html>"), gbc);
+        panel.add(new JLabel("<html><font size='5'>🎵 Title of the Song:</font></html>"), gbc); // Musical note icon added
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -45,57 +48,25 @@ public class LyricsView {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        fetchButton = new JButton("<html><font size='5'>🎶 Get Lyrics</font></html>");
+        gbc.gridwidth = 2; // Set the button to span two columns
+        gbc.anchor = GridBagConstraints.CENTER; // Center the button
+        JButton fetchButton = new JButton("<html><font size='5'>🎶 Get Lyrics</font></html>"); // Music note icon added
         panel.add(fetchButton, gbc);
 
-        // Additional UI components
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        lyricsDisplay = new JTextArea(20, 40);
-        lyricsDisplay.setEditable(false);
-        lyricsDisplay.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        fetchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String artist = artistTextField.getText();
+                String track = trackTextField.getText();
 
-        lyricsScrollPane = new JScrollPane(lyricsDisplay);
-        panel.add(lyricsScrollPane, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        goBackButton = new JButton("<html><font size='5'>🔙 Go Back</font></html>");
-        panel.add(goBackButton, gbc);
+                // Call the back end to fetch lyrics
+                BackEnd.fetchLyrics(artist, track);
+            }
+        });
 
         frame.getContentPane().add(panel);
-        frame.setSize(600, 400);
+        frame.setSize(400, 200);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public JTextField getArtistTextField() {
-        return artistTextField;
-    }
-
-    public JTextField getTrackTextField() {
-        return trackTextField;
-    }
-
-    public JButton getFetchButton() {
-        return fetchButton;
-    }
-
-    public JTextArea getLyricsDisplay() {
-        return lyricsDisplay;
-    }
-
-    public JButton getGoBackButton() {
-        return goBackButton;
-    }
-
-    public JScrollPane getLyricsScrollPane() {
-        return lyricsScrollPane;
     }
 }
