@@ -22,6 +22,15 @@ public class PlayList_M {
    {
        name=n;
    }
+   public boolean hasSong(String song)
+   {
+       for(Song_M s:songs)
+       {
+           if(s.songTitle().equals(song))
+               return true;
+       }
+       return false;
+   }
    public String getPlayListName()
    {
        return name;

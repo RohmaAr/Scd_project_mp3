@@ -47,9 +47,9 @@ public class Player_M {
         d+=song.seconds();
         return d;
     }
-    public void setLoop()
+    public void setLoop(boolean b)
     {
-        loop=!loop;
+        loop=b;
     }
     public void play(){
         paused=false;

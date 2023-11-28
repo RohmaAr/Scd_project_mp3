@@ -4,7 +4,7 @@
  */
 package View;
 
-import Controller.PlayBack_Volume__C;
+import Controller.Player_C;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -24,7 +24,7 @@ public class Player_V {
     private JProgressBar progressBar;
     private JLabel songLabel;
     private JButton like;
-    private JButton loop;
+    private JToggleButton loop;
     private JButton lyricsButton;
      private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image image = icon.getImage();
@@ -90,6 +90,19 @@ public class Player_V {
          int n=progressBar.getValue();
          progressBar.setValue(++n);
      }
+     public  void likedListener(ActionListener a)
+     {
+         like.addActionListener(a);
+     }
+     public void loopListener(ChangeListener a)
+     {
+         loop.addChangeListener(a);
+     }
+     public void setLikeIcon(String pic)
+     {
+         ImageIcon originalIcon = new ImageIcon(pic);
+        like.setIcon(resizeIcon(originalIcon,30,30));
+     }
      //#C0BCDB
     public Player_V() {
         
@@ -98,41 +111,40 @@ public class Player_V {
         playBackToolBar = new JToolBar();
         volumeToolBar=new JToolBar(JToolBar.VERTICAL);
         playBackToolBar.setBounds(0, 0, 500, 100);
-        ImageIcon originalIcon = new ImageIcon("Icons\\lyrics_light.png");
-        lyricsButton = new JButton(resizeIcon(originalIcon,50,50));         
-        originalIcon = new ImageIcon("Icons\\play_light.png");
+        ImageIcon originalIcon = new ImageIcon("Icons\\lyrics_dark.png");
+        lyricsButton = new JButton(resizeIcon(originalIcon,40,40));         
+        originalIcon = new ImageIcon("Icons\\play_dark.png");
         play_pause_Button = new JButton(resizeIcon(originalIcon,60,60));         
         originalIcon = new ImageIcon("Icons\\volume_up_dark.png");
-        volumeUpButton = new JButton(resizeIcon(originalIcon,20,20));
+        volumeUpButton = new JButton(resizeIcon(originalIcon,40,40));
         originalIcon = new ImageIcon("Icons\\volume_down_dark.png");
-        volumeDownButton = new JButton(resizeIcon(originalIcon,20,20)); 
+        volumeDownButton = new JButton(resizeIcon(originalIcon,40,40)); 
         originalIcon = new ImageIcon("Icons\\previous_dark.png");
         previousButton = new JButton(resizeIcon(originalIcon,40,40)); 
         originalIcon = new ImageIcon("Icons\\next_dark.png");
         nextButton = new JButton(resizeIcon(originalIcon,40,40)); 
         originalIcon = new ImageIcon("Icons\\mute_dark.png");
-        muteButton = new JButton(resizeIcon(originalIcon,20,20)); 
+        muteButton = new JButton(resizeIcon(originalIcon,40,40)); 
         originalIcon = new ImageIcon("Icons\\like.png");
         like = new JButton(resizeIcon(originalIcon,30,30)); 
         originalIcon = new ImageIcon("Icons\\loop_dark.png");
-        loop = new JButton(resizeIcon(originalIcon,30,30)); 
+        loop = new JToggleButton(resizeIcon(originalIcon,30,30),false); 
         //muteButton.setBackground(new Color(192, 188, 219));
         //muteButton.setBackground(new Color(0,0,0));
         progressBar = new JProgressBar();
-        songLabel = new JLabel("Now Playing: ");
-        //new PlayBack_Volume__C(this,null);
+        songLabel = new JLabel();
         JPanel top=new JPanel();
         JPanel right=new JPanel();
         top.add(songLabel);
         JPanel bottom=new JPanel();
-        playBackToolBar.setBackground(new Color(0,0,0));
+        //playBackToolBar.setBackground(new Color(0,0,0));
         bottom.setLayout(new BoxLayout(bottom,BoxLayout.Y_AXIS));
         playBackToolBar.add(loop);
         playBackToolBar.addSeparator(new Dimension(40,0));
         playBackToolBar.add(previousButton);
         playBackToolBar.addSeparator(new Dimension(30,0));
         playBackToolBar.add(play_pause_Button);
-        play_pause_Button.setBackground(new Color(0,0,0));
+        //play_pause_Button.setBackground(new Color(0,0,0));
         playBackToolBar.addSeparator(new Dimension(30,0));
         playBackToolBar.add(nextButton);
         playBackToolBar.addSeparator(new Dimension(40,0));

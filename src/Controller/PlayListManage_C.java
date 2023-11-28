@@ -33,7 +33,7 @@ public class PlayListManage_C {
     Player_M player;
     Player_V playScreen;
     AllSongs_M allSongs;
-    PlayBack_Volume__C pbv;
+    Player_C pbv;
     User_M user;
     Database_M database;
     public PlayListManage_C(User_M use,PlayList_M pl)
@@ -109,9 +109,20 @@ public class PlayListManage_C {
                 System.out.println("set song");
                 player=new Player_M(songPlay);
                 playScreen=new Player_V();
-                pbv=new PlayBack_Volume__C(user,playScreen,player);
+                pbv=new Player_C(user,playScreen,player);
                 
          }
+        });
+        
+        playlistDisplay.playAllListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player=new Player_M(playlist);
+                playScreen=new Player_V();
+                pbv=new Player_C(user,playScreen,player);
+                
+            }
+        
         });
         playlistDisplay.setDeleteListener(e->{
            int choice=JOptionPane.showConfirmDialog(playlistDisplay.getCardPanel(),playlist.getPlayListName()+" will be permanently deleted. Are you sure?", "Confirm Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
