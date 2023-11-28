@@ -23,7 +23,7 @@ public class AllHome_C {
     NonUserHome_V home;
     Player_M player;
     Player_V playScreen;
-    PlayBack_Volume__C pbv;
+    Player_C pbv;
     public AllHome_C(){
         home=new NonUserHome_V();
         allSongs=AllSongs_M.getAllSongs();
@@ -38,7 +38,7 @@ public class AllHome_C {
                 System.out.println("set song");
                 player=new Player_M(songPlay);
                 playScreen=new Player_V();
-                pbv=new PlayBack_Volume__C(null,playScreen,player);
+                pbv=new Player_C(null,playScreen,player);
                 
          }
         });

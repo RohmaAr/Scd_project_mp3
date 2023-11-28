@@ -19,6 +19,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,9 +42,10 @@ public class LoggedInHome_V {
     JPanel playListsPanel;
     JPanel createPlaylist;
     JPanel historyPanel;
+    JPanel likedPanel;
     JToolBar toolBar;
     CardLayout layout=new CardLayout();
-    JTextField nameNewPlaylist=new JTextField("Enter Playlist name");
+    JTextField nameNewPlaylist=new JTextField(15);
     JButton create=new JButton("Create Playlist");
     HashSet<String> addHashset;
     JPanel container;
@@ -91,16 +93,24 @@ public class LoggedInHome_V {
         createPlaylist=new JPanel();
         createPlaylist.setLayout(new BorderLayout());
         historyPanel=new JPanel();
+        likedPanel=new JPanel();
         container.add(mainPanel, "Main");
         container.add(createPlaylist, "Create");
         container.add(historyPanel, "History");
+        container.add(likedPanel, "Liked");
         frame.setVisible(true);
         
     }
     public void readyHistoryPanel(ArrayList<String> historyInfo)
     {
         historyPanel.removeAll();
-        historyPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JPanel p=new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        historyPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        p.add(back);
+        JLabel l=new JLabel("Playback History");
+        l.setFont(new Font(Font.SERIF,  Font.PLAIN, 25));   
+        p.add(l);
+        historyPanel.add(p);
         if(historyInfo!=null){
             for(int i=0;i<historyInfo.size();i++){
                 JLabel label=new JLabel(historyInfo.get(i));
@@ -131,7 +141,10 @@ public class LoggedInHome_V {
     {
         layout.show(container, "History");
     }
-    
+    public void showLiked()
+    {
+        layout.show(container, "Liked");
+    }
     public void showCreate()
     {
         layout.show(container, "Create");
@@ -193,16 +206,21 @@ public class LoggedInHome_V {
         }
         JPanel p2=new JPanel();
         JPanel p3=new JPanel();
+        p3.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         p3.setLayout(new BoxLayout(p3,BoxLayout.Y_AXIS));
         p2.add(create);
         p3.add(back);
-        nameNewPlaylist.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 30));
+        nameNewPlaylist.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
         p3.add(nameNewPlaylist);
+        p3.add(new JPanel());
         createPlaylist.add(p2,BorderLayout.SOUTH);
         createPlaylist.add(p3,BorderLayout.NORTH);
         createPlaylist.add(new JScrollPane(p),BorderLayout.CENTER);
     }
-    
+    public void readyLikedPanel(String[][] info)
+    {
+        
+    }
     public void setPlaylistNames()
     {
         playListsPanel.removeAll();
@@ -215,7 +233,7 @@ public class LoggedInHome_V {
             playlistButton.addActionListener(this.playlistButtonListener);
             playListsPanel.add(playlistButton);
         }
-        }
+       }
         
     }
     public void voluntaryBack()
@@ -234,5 +252,9 @@ public class LoggedInHome_V {
     public void setLikedListener(ActionListener a)
     {
         liked.addActionListener(a);
+    }
+    public void setUserName(String n)
+    {
+        this.person.setText(n);
     }
 }

@@ -94,4 +94,10 @@ public class User_M {
     {
         history=h;
     }
+    public boolean likesSong(String songs)
+    {
+        if(likedSongs!=null)
+            return likedSongs.hasSong(songs);
+        return false;
+    }
 }

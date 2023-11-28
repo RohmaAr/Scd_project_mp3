@@ -53,6 +53,7 @@ public class Playlist_V {
     JPanel enabledPanel;
     JCheckBox checkBox;
     JButton delete;
+    JButton playAll;
     JButton saveChanges=new JButton("Save ");
     public Playlist_V()
     {
@@ -63,7 +64,10 @@ public class Playlist_V {
         nameFixed.setEnabled(false);
         top = new JPanel();
         top.add(nameFixed);
-        ImageIcon originalIcon = new ImageIcon("Icons\\edit_dark.png");         
+        ImageIcon originalIcon = new ImageIcon("Icons\\play_dark.png");         
+        playAll=new JButton(resizeIcon(originalIcon,50,50));
+        top.add(playAll);
+        originalIcon = new ImageIcon("Icons\\edit_dark.png");         
         edit=new JToggleButton(resizeIcon(originalIcon,50,50),false);
         top.add(edit);
         originalIcon = new ImageIcon("Icons\\delete_dark.png");         
@@ -180,6 +184,10 @@ public class Playlist_V {
         System.out.println(     tableModel.getRowCount());
         tableModel.fireTableDataChanged();
         tableEditing();
+    }
+    public void playAllListener(ActionListener a)
+    {
+        playAll.addActionListener(a);
     }
     private void tableEditing()
     {

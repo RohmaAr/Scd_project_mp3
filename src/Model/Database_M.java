@@ -403,6 +403,23 @@ public class Database_M {
             Logger.getLogger(Database_M.class.getName()).log(Level.SEVERE, null, ex);
         }
      }
+     public void dbRemoveFromLiked(String user,String song){
+         try {
+            int userId=this.getsUserIdByName(user);
+            int songId=this.getsSongIdByName(song);
+            query = "delete from favorite_songs where song_id=? and user_id=?";
+            stat = con.prepareStatement(query);
+            stat.setInt(1, songId);
+            stat.setInt(2, userId);
+            int deleted= stat.executeUpdate();
+            if(deleted!=1)
+            {
+                System.out.println("more than one liked record deleted ");
+            }
+           } catch (SQLException ex) {
+            Logger.getLogger(Database_M.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
      public void dbDisplayAllTables()
      {
         try {

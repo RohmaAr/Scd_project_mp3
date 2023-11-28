@@ -38,6 +38,7 @@ public class LoggedHome_C {
         home=new LoggedInHome_V();
         home.setPlaylistNamesListener(user.getAllPlaylistNames(), new ListenerForPlaylistButtons());
         home.setPlaylistNames();
+        home.setUserName(user.getName());
         home.showMain();
             
         allSongs=AllSongs_M.getAllSongs();
@@ -100,6 +101,12 @@ public class LoggedHome_C {
             public void actionPerformed(ActionEvent e) {
                 home.readyHistoryPanel(user.getHistory());
                 home.showHistory();
+            }
+        });
+        home.setLikedListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
             }
         });
     }
