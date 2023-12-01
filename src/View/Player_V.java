@@ -103,6 +103,10 @@ public class Player_V {
          ImageIcon originalIcon = new ImageIcon(pic);
         like.setIcon(resizeIcon(originalIcon,30,30));
      }
+     public void clickPlayPause()
+     {
+         this.play_pause_Button.doClick();
+     }
      //#C0BCDB
     public Player_V() {
         

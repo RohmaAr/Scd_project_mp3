@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,11 +27,11 @@ public class LoginRegister_C {
     LoggedHome_C home;
     Database_M database;
     AllSongs_M allSongs;
-    public LoginRegister_C()
+    public LoginRegister_C(LoginRegister_V logPanel)
     {
         database=Database_M.getDatabaseConnection();
         allSongs=allSongs.getAllSongs();
-        logRegV=new LoginRegister_V();
+        logRegV=logPanel;
         logRegV.setGoToLogin(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {

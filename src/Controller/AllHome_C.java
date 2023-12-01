@@ -7,6 +7,7 @@ package Controller;
 import Model.AllSongs_M;
 import Model.Player_M;
 import Model.Song_M;
+import View.LoginRegister_V;
 import View.NonUserHome_V;
 import View.Player_V;
 import java.awt.event.MouseAdapter;
@@ -24,6 +25,8 @@ public class AllHome_C {
     Player_M player;
     Player_V playScreen;
     Player_C pbv;
+    LoginRegister_C conLog;
+    LoginRegister_V logReg;
     public AllHome_C(){
         home=new NonUserHome_V();
         allSongs=AllSongs_M.getAllSongs();
@@ -42,9 +45,22 @@ public class AllHome_C {
                 
          }
         });
-        home.setLoginListener(e->{
-            new LoginRegister_C();
-            player.pause();
+        home.setAllPlaylistener(e->
+        {
+                player=new Player_M(allSongs);
+                playScreen=new Player_V();
+                pbv=new Player_C(null,playScreen,player);
+                
+        });
+        home.setBackListener(e->{
+          home.goToAllSongs();
+        });
+        home.setLoginRegisterListener(e->{
+            
+            logReg=new LoginRegister_V(home.getBackButton());
+            conLog=new LoginRegister_C(logReg); 
+            home.addLoginPanel(logReg);
+            home.goToLoginReg();
         });
     }
 }

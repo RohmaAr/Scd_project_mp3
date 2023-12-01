@@ -37,8 +37,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Dell
  */
-public class Playlist_V {
-    JFrame frame;
+public class Playlist_V extends JPanel {
+   // JFrame frame;
     JTable table;
     JPanel cardPanel;
     CardLayout layout;
@@ -54,15 +54,19 @@ public class Playlist_V {
     JCheckBox checkBox;
     JButton delete;
     JButton playAll;
+    JButton back;
     JButton saveChanges=new JButton("Save ");
-    public Playlist_V()
+    public Playlist_V(JButton b)
     {
-        frame=new JFrame();
-        frame.setSize(600,600);
+        //frame=new JFrame();
+        //frame.setSize(600,600);
+        this.setLayout(new BorderLayout());
         nameFixed=new JLabel();
         nameFixed.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
         nameFixed.setEnabled(false);
         top = new JPanel();
+        back=b;
+        top.add(back);
         top.add(nameFixed);
         ImageIcon originalIcon = new ImageIcon("Icons\\play_dark.png");         
         playAll=new JButton(resizeIcon(originalIcon,50,50));
@@ -74,7 +78,9 @@ public class Playlist_V {
         delete=new JButton();
         delete.setIcon(resizeIcon(originalIcon,50,50));
         top.add(delete);
-        frame.add(top,BorderLayout.NORTH);
+        //frame.add(top,BorderLayout.NORTH);
+        
+        this.add(top,BorderLayout.NORTH);
         cardPanel = new JPanel();
         layout=new CardLayout();
         cardPanel.setLayout(layout);
@@ -88,12 +94,18 @@ public class Playlist_V {
         table.setRowHeight(40);
         table.setEnabled(false);
         disabledPanel.add(new JScrollPane(table),BorderLayout.CENTER);
-        frame.add(cardPanel,BorderLayout.CENTER);
-        frame.setVisible(true);
+        this.add(cardPanel,BorderLayout.CENTER);
+        //frame.setVisible(true);
         }
     public void setTogglefalse()
     {
         edit.doClick();
+    }
+    public void setDisablechanges()
+    {
+        edit.setEnabled(false);
+        delete.setEnabled(false);
+        
     }
     public JPanel getCardPanel()
     {
@@ -107,6 +119,7 @@ public class Playlist_V {
      {
          return selected;
      }
+    @Override
      public CardLayout getLayout()
      {
          return layout;
@@ -193,7 +206,7 @@ public class Playlist_V {
     {
          table.getColumnModel().getColumn(0).setPreferredWidth(300);
         table.getColumnModel().getColumn(1).setCellRenderer(new RightAlignmentRenderer());
-         frame.setVisible(true);
+        // frame.setVisible(true);
    
     }
      private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
