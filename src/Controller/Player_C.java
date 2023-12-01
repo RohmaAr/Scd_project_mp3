@@ -8,6 +8,7 @@ import Model.Database_M;
 import Model.Player_M;
 import Model.Song_M;
 import Model.User_M;
+import View.FrontEnd;
 //import View.FrontEnd;
 import View.Player_V;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,7 @@ import javax.swing.JToggleButton;
 public class Player_C {
     Player_M player;
     Player_V playerScreen; 
-  //  FrontEnd frontEnd;//for lyrics front end by fatima
+    FrontEnd frontEnd;//for lyrics front end by fatima
         int i = 1;
     public Player_C(User_M user,Player_V p,Player_M pm)
     {
@@ -44,7 +45,7 @@ public class Player_C {
         }
         playerScreen=p;
          playerScreen.setSong(player.getCurrentSong());
-         if(user.likesSong(player.getCurrentSong()))
+         if(user!=null && user.likesSong(player.getCurrentSong()))
              playerScreen.setLikeIcon("Icons\\liked.png");
          else
               playerScreen.setLikeIcon("Icons\\like.png");
@@ -54,8 +55,10 @@ public class Player_C {
             public void actionPerformed(ActionEvent e) {
                 playerScreen.setSong(player.next());
                 playerScreen.progressReset();
-                user.addToHistory(playerScreen.getSong());
-                db.dbPutInHistory(user.getName(), player.getCurrentSong());
+                if(user!=null){
+                    user.addToHistory(playerScreen.getSong());
+                    db.dbPutInHistory(user.getName(), player.getCurrentSong());
+                }
                 i=0;
             }
         });
@@ -76,6 +79,8 @@ public class Player_C {
         playerScreen.likedListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(user==null)
+                    return;
                 if(user.likesSong(player.getCurrentSong()))
                 {
                     AllSongs_M songs=AllSongs_M.getAllSongs();
@@ -139,8 +144,10 @@ public class Player_C {
             @Override
             public void actionPerformed(ActionEvent e) {
                 playerScreen.setSong(player.previous());
-                user.addToHistory(playerScreen.getSong());
-                db.dbPutInHistory(user.getName(), player.getCurrentSong());
+                if(user!=null){
+                    user.addToHistory(playerScreen.getSong());
+                    db.dbPutInHistory(user.getName(), player.getCurrentSong());
+                }
                 playerScreen.progressReset();
             i=0;
             }
@@ -162,8 +169,10 @@ public class Player_C {
                 System.out.println("Song complete");
                 bar.setValue(0);
                 playerScreen.setSong(player.implicitNext());
-                user.addToHistory(playerScreen.getSong());
-            db.dbPutInHistory(user.getName(), player.getCurrentSong());
+                if(user!=null){
+                    user.addToHistory(playerScreen.getSong());
+                    db.dbPutInHistory(user.getName(), player.getCurrentSong());
+                }
             }
             };
         
@@ -177,8 +186,8 @@ public class Player_C {
                 String artist=scan.next();
                 String track=scan.next();
                 System.out.println(artist +" "+track);
-//                frontEnd=new FrontEnd();
-//                frontEnd.setArtistAndTrack(artist, track);//for lyrics front end by fatima
+                frontEnd=new FrontEnd();
+                frontEnd.setArtistAndTrack(artist, track);//for lyrics front end by fatima
             }
             
         });

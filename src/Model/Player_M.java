@@ -109,6 +109,9 @@ public class Player_M {
         }
         
     }
+//    public String forwardToSong()
+//    {
+//    }
     public void volumeDownControl(Double valueToPlusMinus){
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         for(Mixer.Info mixerInfo : mixers){

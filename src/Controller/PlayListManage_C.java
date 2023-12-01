@@ -36,13 +36,13 @@ public class PlayListManage_C {
     Player_C pbv;
     User_M user;
     Database_M database;
-    public PlayListManage_C(User_M use,PlayList_M pl)
+    public PlayListManage_C(User_M use,PlayList_M pl,Playlist_V pV)
     {
         database=Database_M.getDatabaseConnection();
         user=use;
         allSongs=AllSongs_M.getAllSongs();
         playlist=pl;
-        playlistDisplay=new Playlist_V();
+        playlistDisplay=pV;
         playlistDisplay.setPlaylistName(playlist.getPlayListName());
        playlistDisplay.setToggle(new ItemListener() {
         @Override

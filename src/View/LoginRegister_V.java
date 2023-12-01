@@ -4,6 +4,7 @@
  */
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,7 +29,7 @@ import javax.swing.JTextField;
  *
  * @author Dell
  */
-public class LoginRegister_V {
+public class LoginRegister_V extends JPanel{
     JFrame frame=new JFrame("Register an Account");
     JPanel loginPanel;
     JPanel registerPanel;
@@ -44,7 +45,8 @@ public class LoginRegister_V {
     JButton submitRegister=new JButton("Submit");
     JButton gotoRegister=new JButton("Create an account");
     CardLayout layout;
-    public LoginRegister_V()
+    JButton back;
+    public LoginRegister_V(JButton back)
     {
         loginPanel=new JPanel();
         registerPanel=new JPanel();
@@ -63,9 +65,14 @@ public class LoginRegister_V {
         registerPanel.setLayout(new BoxLayout(registerPanel,BoxLayout.Y_AXIS));
         readyLoginPanel();
         showLoginPanel();
-        frame.add(mainPanel);
-        frame.setSize(400, 500);
-        frame.setVisible(true);
+        this.setLayout(new BorderLayout());
+        JPanel p=new JPanel(new FlowLayout(FlowLayout.LEFT));
+        this.back=back;
+        p.add(back);
+        this.add(p,BorderLayout.NORTH);
+        this.add(mainPanel,BorderLayout.CENTER);
+        this.setSize(400, 500);
+        this.setVisible(true);
     }
     public void showLoginPanel()
     {

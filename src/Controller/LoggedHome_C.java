@@ -10,6 +10,7 @@ import Model.PlayList_M;
 import Model.Song_M;
 import Model.User_M;
 import View.LoggedInHome_V;
+import View.Playlist_V;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ public class LoggedHome_C {
     LoggedInHome_V home;
     AllSongs_M allSongs;
     Database_M database;
+    Playlist_V playlistV;
     PlayListManage_C displayPlaylist;
     public LoggedHome_C(User_M u)
     {
@@ -40,7 +42,6 @@ public class LoggedHome_C {
         home.setPlaylistNames();
         home.setUserName(user.getName());
         home.showMain();
-            
         allSongs=AllSongs_M.getAllSongs();
         home.createListener(new ActionListener(){
             @Override
@@ -106,7 +107,12 @@ public class LoggedHome_C {
         home.setLikedListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                playlistV=new Playlist_V(home.getBackButton());
+                home.addPanelToHome(playlistV);
+                home.showAddedPanel();
+                playlistV.setDisablechanges();
+                displayPlaylist=new PlayListManage_C(user,user.getLikedSongs(),playlistV);
+        
             }
         });
     }
@@ -116,7 +122,10 @@ public class LoggedHome_C {
         public void actionPerformed(ActionEvent e) {
             JButton b=(JButton)e.getSource();
             PlayList_M playlist=user.getPlayListOrNot(b.getText());
-            displayPlaylist=new PlayListManage_C(user,playlist);
+            playlistV=new Playlist_V(home.getBackButton());
+            home.addPanelToHome(playlistV);
+            home.showAddedPanel();
+            displayPlaylist=new PlayListManage_C(user,playlist,playlistV);
         }
     
     }
