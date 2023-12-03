@@ -7,6 +7,7 @@ package View;
 import Controller.AllHome_C;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
@@ -42,6 +43,7 @@ public class Playlist_V extends JPanel {
     JTable table;
     JPanel cardPanel;
     CardLayout layout;
+    Color purple=new Color(192, 188, 219);
     DefaultTableModel tableModel;
     //JTextField name;
     HashSet<String> selected=new HashSet<>();
@@ -78,8 +80,7 @@ public class Playlist_V extends JPanel {
         delete=new JButton();
         delete.setIcon(resizeIcon(originalIcon,50,50));
         top.add(delete);
-        //frame.add(top,BorderLayout.NORTH);
-        
+       
         this.add(top,BorderLayout.NORTH);
         cardPanel = new JPanel();
         layout=new CardLayout();
@@ -95,8 +96,53 @@ public class Playlist_V extends JPanel {
         table.setEnabled(false);
         disabledPanel.add(new JScrollPane(table),BorderLayout.CENTER);
         this.add(cardPanel,BorderLayout.CENTER);
-        //frame.setVisible(true);
-        }
+    }
+    public void setLightMode()
+    {
+        this.back.setBackground(purple);
+        this.back.setForeground(Color.darkGray);
+        this.cardPanel.setBackground(purple);
+       this.delete.setBackground(purple);
+        this.disabledPanel.setBackground(purple);
+        this.edit.setBackground(purple);
+        this.nameFixed.setBackground(purple);
+        this.nameFixed.setForeground(Color.darkGray);
+        this.playAll.setBackground(purple);
+        this.saveChanges.setBackground(purple);
+        this.saveChanges.setForeground(Color.darkGray);
+        this.table.setBackground(purple);
+        this.table.setForeground(Color.darkGray);
+        this.top.setBackground(purple);
+         ImageIcon originalIcon = new ImageIcon("Icons\\delete_dark.png");         
+        delete.setIcon(resizeIcon(originalIcon,50,50));
+         originalIcon = new ImageIcon("Icons\\edit_dark.png");         
+        edit.setIcon(resizeIcon(originalIcon,50,50));
+         originalIcon = new ImageIcon("Icons\\play_dark.png");         
+        playAll.setIcon(resizeIcon(originalIcon,50,50));
+    }
+     public void setDarkMode()
+    {
+        this.back.setBackground(Color.darkGray);
+        this.back.setForeground(this.purple);
+        this.cardPanel.setBackground(Color.darkGray);
+        this.delete.setBackground(Color.darkGray);
+        this.disabledPanel.setBackground(Color.darkGray);
+        this.edit.setBackground(Color.darkGray);
+        this.nameFixed.setBackground(Color.darkGray);
+        this.nameFixed.setForeground(purple);
+        this.playAll.setBackground(Color.darkGray);
+        this.saveChanges.setBackground(Color.darkGray);
+        this.saveChanges.setForeground(purple);
+        this.table.setBackground(Color.darkGray);
+        this.table.setForeground(purple);
+     this.top.setBackground(Color.darkGray);
+        ImageIcon originalIcon = new ImageIcon("Icons\\delete_light.png");         
+        delete.setIcon(resizeIcon(originalIcon,50,50));
+         originalIcon = new ImageIcon("Icons\\edit_light.png");         
+        edit.setIcon(resizeIcon(originalIcon,50,50));
+         originalIcon = new ImageIcon("Icons\\play_light.png");         
+        playAll.setIcon(resizeIcon(originalIcon,50,50));
+    }
     public void setTogglefalse()
     {
         edit.doClick();
@@ -141,11 +187,23 @@ public class Playlist_V extends JPanel {
          delete.addActionListener(a);
      }
 
-    public void editingPanel(String[][] songNames,Boolean[] present){
+    public void editingPanel(String[][] songNames,Boolean[] present,boolean mode){
         JPanel p=new JPanel();
         p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+        if(mode)
+            p.setBackground(purple);
+        else
+            p.setBackground(Color.darkGray);
         for(int i=0;i<songNames.length;i++){
             checkBox=new JCheckBox(songNames[i][0],present[i]);
+             if(mode){
+                checkBox.setBackground(purple);
+                 checkBox.setForeground(Color.darkGray);
+            }
+            else{
+            checkBox.setBackground(Color.darkGray);
+                 checkBox.setForeground(purple);
+            }
             checkBox.addItemListener(new ItemListener(){
                 @Override
                 public void itemStateChanged(ItemEvent e) {
@@ -176,6 +234,10 @@ public class Playlist_V extends JPanel {
         }
         saveChanges.setEnabled(false);
         JPanel p2=new JPanel();
+        if(mode)
+            p2.setBackground(purple);
+        else
+            p2.setBackground(Color.darkGray);
         p2.add(saveChanges);
         enabledPanel.add(p2,BorderLayout.SOUTH);
         enabledPanel.add(new JScrollPane(p),BorderLayout.CENTER);
@@ -189,13 +251,22 @@ public class Playlist_V extends JPanel {
             setHorizontalAlignment(SwingConstants.RIGHT);
         }
     }
-    public void populateTable(String[][] songInfo)
+    public void populateTable(String[][] songInfo,boolean mode)
     {
         String[] col={"Song","Duration"};
         tableModel=new DefaultTableModel(songInfo,col);
         table.setModel(tableModel);
         System.out.println(     tableModel.getRowCount());
         tableModel.fireTableDataChanged();
+        if(mode){
+        table.setBackground(purple);
+        table.setForeground(Color.darkGray);
+        }
+        else
+        {
+             table.setForeground(purple);
+             table.setBackground(Color.darkGray);
+        }
         tableEditing();
     }
     public void playAllListener(ActionListener a)

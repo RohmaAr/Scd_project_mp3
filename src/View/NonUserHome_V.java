@@ -7,6 +7,7 @@ package View;
 import Controller.AllHome_C;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -44,6 +45,8 @@ public class NonUserHome_V {
     CardLayout layout;
     JPanel mainPanel=new JPanel();
     JPanel allsongPanel=new JPanel(new BorderLayout());
+    
+    Color purple=new Color(192, 188, 219);
     public NonUserHome_V()
     {
         
@@ -64,6 +67,12 @@ public class NonUserHome_V {
         mainPanel.setLayout(layout);
         mainPanel.add(allsongPanel,"allSongs");
         this.goToAllSongs();
+        this.allsongPanel.setBackground(purple);
+        this.back.setBackground(purple);
+        this.frame.setBackground(purple);
+        this.mainPanel.setBackground(purple);
+        this.playPause.setBackground(purple);
+        this.table.setBackground(purple);
         frame.add(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

@@ -6,9 +6,11 @@ package Controller;
 
 import Model.AllSongs_M;
 import Model.Database_M;
+import Model.Mode_M;
 import Model.PlayList_M;
 import Model.Song_M;
 import Model.User_M;
+import View.AudioRecorder_V;
 import View.LoggedInHome_V;
 import View.Playlist_V;
 import java.awt.CardLayout;
@@ -40,9 +42,11 @@ public class LoggedHome_C {
         user=u;
         home=new LoggedInHome_V();
         home.setPlaylistNamesListener(user.getAllPlaylistNames(), new ListenerForPlaylistButtons());
-        home.setPlaylistNames();
-        home.setUserName(user.getName());
+        home.setPlaylistNames(Mode_M.getMode());
+        home.setUserName(user.getName().toUpperCase());
         home.showMain();
+        
+            home.setLightMode();
         allSongs=AllSongs_M.getAllSongs();
         home.createListener(new ActionListener(){
             @Override
@@ -82,18 +86,22 @@ public class LoggedHome_C {
                 }
            }
         });
+        home.setDetectSongsListener(e->{
+            home.addPanelToHome(new AudioRecorder_V(home.getBackButton(),Mode_M.getMode()), "DetectSongs");
+            home.showAddedPanel("DetectSongs");
+        });
         home.addLogOutListener(e->{
            home.getFrame().dispose();
            if(displayPlaylist!=null)
            displayPlaylist.disposePlayerFrame();
            new AllHome_C();
         });
-        home.readyCreate(allSongs.getSongsData());
+       
         home.backListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 home.setPlaylistNamesListener(user.getAllPlaylistNames(), new ListenerForPlaylistButtons());
-                home.setPlaylistNames();
+                home.setPlaylistNames(Mode_M.getMode());
                 home.showMain();
             }
         
@@ -101,22 +109,39 @@ public class LoggedHome_C {
         home.createPlaylistListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                 home.readyCreate(allSongs.getSongsData(),Mode_M.getMode());
                 home.showCreate();
             }
         });
         home.setHistoryListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.readyHistoryPanel(user.getHistory());
+                home.readyHistoryPanel(user.getHistory(),Mode_M.getMode());
                 home.showHistory();
             }
+        });
+        home.setCustomizeListener(e->{
+            if(Mode_M.getMode()){
+            home.modeIconChange("Icons\\light_light.png");
+            Mode_M.modeChange();
+            home.setDarkMode();
+            }
+            else
+            {
+            home.modeIconChange("Icons\\dark_dark.png");
+            Mode_M.modeChange();
+            home.setLightMode();
+            }
+            home.voluntaryBack();
+            home.showCreate();
+            home.showMain();
         });
         home.setLikedListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 playlistV=new Playlist_V(home.getBackButton());
-                home.addPanelToHome(playlistV);
-                home.showAddedPanel();
+                home.addPanelToHome(playlistV,"playlist");
+                home.showAddedPanel("playlist");
                 playlistV.setDisablechanges();
                 displayPlaylist=new PlayListManage_C(user,user.getLikedSongs(),playlistV);
         
@@ -130,8 +155,8 @@ public class LoggedHome_C {
             JButton b=(JButton)e.getSource();
             PlayList_M playlist=user.getPlayListOrNot(b.getText());
             playlistV=new Playlist_V(home.getBackButton());
-            home.addPanelToHome(playlistV);
-            home.showAddedPanel();
+            home.addPanelToHome(playlistV,"playlist");
+            home.showAddedPanel("playlist");
             displayPlaylist=new PlayListManage_C(user,playlist,playlistV);
         }
     
