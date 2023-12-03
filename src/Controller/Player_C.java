@@ -5,6 +5,7 @@
 package Controller;
 import Model.AllSongs_M;
 import Model.Database_M;
+import Model.Mode_M;
 import Model.Player_M;
 import Model.Song_M;
 import Model.User_M;
@@ -13,6 +14,8 @@ import View.FrontEnd;
 import View.Player_V;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -30,8 +33,8 @@ public class Player_C {
     Player_M player;
     Player_V playerScreen; 
     FrontEnd frontEnd;//for lyrics front end by fatima
-    private SwingWorker<Void, Void> songProgressWorker;    
-    int i = 1;
+   int i = 1;
+   boolean end=false;
     public Player_C(User_M user,Player_V p,Player_M pm)
     {
         Database_M db=Database_M.getDatabaseConnection();
@@ -44,7 +47,12 @@ public class Player_C {
         {
             player=pm;
         }
+        new Worker();
         playerScreen=p;
+        if(Mode_M.getMode())
+            playerScreen.setlightMode(player.isPaused());
+        else
+            playerScreen.setDarkMode(player.isPaused());
          playerScreen.setSong(player.getCurrentSong());
          if(user!=null && user.likesSong(player.getCurrentSong()))
              playerScreen.setLikeIcon("Icons\\liked.png");
@@ -60,6 +68,8 @@ public class Player_C {
                     user.addToHistory(playerScreen.getSong());
                     db.dbPutInHistory(user.getName(), player.getCurrentSong());
                 }
+                playerScreen.progressSetMax(player.getDuration());
+                playerScreen.progressReset();
                 i=0;
             }
         });
@@ -75,6 +85,13 @@ public class Player_C {
                     player.setLoop(true);
                 else 
                     player.setLoop(false);
+            }
+        });
+        playerScreen.setWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e){
+                player.pause();
+                end=true;
             }
         });
         playerScreen.likedListener(new ActionListener(){
@@ -106,18 +123,19 @@ public class Player_C {
             public void actionPerformed(ActionEvent e) { 
                 if(player.isPaused()){
                 player.play();
-                playerScreen.pausePlayIconChange("Icons\\pause_dark.png");
-                  if (songProgressWorker == null || songProgressWorker.isCancelled()) {
-                        songProgressWorker = createSongProgressWorker();
-                        songProgressWorker.execute();
-                    }
+                if(Mode_M.getMode())
+                    playerScreen.pausePlayIconChange("Icons\\pause_dark.png");
+                else
+                     playerScreen.pausePlayIconChange("Icons\\pause_light.png");
+                 
                 }else
                 {
                     player.pause();
-                playerScreen.pausePlayIconChange("Icons\\play_dark.png");
-                  if (songProgressWorker != null && !songProgressWorker.isCancelled()) {
-                        songProgressWorker.cancel(true);
-                    }
+                  if(Mode_M.getMode())
+                        playerScreen.pausePlayIconChange("Icons\\play_dark.png");
+                  else
+                       playerScreen.pausePlayIconChange("Icons\\play_light.png");
+                  
                 }
             }
             
@@ -131,6 +149,7 @@ public class Player_C {
                     user.addToHistory(playerScreen.getSong());
                     db.dbPutInHistory(user.getName(), player.getCurrentSong());
                 }
+                playerScreen.progressSetMax(player.getDuration());
                 playerScreen.progressReset();
             i=0;
             }
@@ -152,6 +171,7 @@ public class Player_C {
                 System.out.println("Song complete");
                 bar.setValue(0);
                 playerScreen.setSong(player.implicitNext());
+                playerScreen.progressSetMax(player.getDuration());
                 if(user!=null){
                     user.addToHistory(playerScreen.getSong());
                     db.dbPutInHistory(user.getName(), player.getCurrentSong());
@@ -176,30 +196,39 @@ public class Player_C {
         });
         
     }
-    private SwingWorker<Void, Void> createSongProgressWorker() {
-        return new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                while(true){
-                int dura = player.getDuration();
-                playerScreen.progressSetMax(dura);
+    class Worker extends SwingWorker<Void, Void> {
+   
+        public Worker() {
+            this.execute();
+        }
 
-                for (; i <= player.getDuration() && !player.isPaused() && !isCancelled(); i++) {
-                    try {
-                        Thread.sleep(1000);
-                        publish();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Player_C.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        @Override
+        protected Void doInBackground() throws Exception {
+            System.out.println("In doInBackground");
+            while (true) {
+            int dura = player.getDuration();
+            playerScreen.progressSetMax(dura);
+            
+            for (; i <= player.getDuration() && !player.isPaused(); i++) {
+                try {
+                    Thread.sleep(1000);
+                    publish();
+                } catch (InterruptedException ex) {
+                   // Logger.getLogger(Player_C.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }
-                //return null;
+                if(end)
+                    break;
             }
-
-            @Override
-            protected void process(List<Void> chunks) {
-                playerScreen.progressAdd();
+            if(end)
+                break;
             }
-        };
+            return null;
+        }
+        // return null;  // Uncomment this line if you don't want to return anything.
+        
+         @Override
+        protected void process(List<Void> chunks) {
+        playerScreen.progressAdd();
+        }
     }
 }

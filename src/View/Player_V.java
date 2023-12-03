@@ -8,11 +8,13 @@ import Controller.Player_C;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Player_V {
     private JFrame frame;
+     Color purple=new Color(192, 188, 219);
     private JToolBar playBackToolBar;
     private JToolBar volumeToolBar;
     private JButton play_pause_Button;
@@ -26,11 +28,101 @@ public class Player_V {
     private JButton like;
     private JToggleButton loop;
     private JButton lyricsButton;
+    private JPanel top=new JPanel();
+    private JPanel right=new JPanel();
+    private JPanel bottom=new JPanel();
+    private JPanel center=new JPanel();
      private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImage);
     }
+     public void setlightMode(boolean paused)
+     {
+         this.frame.setBackground(purple);
+         this.like.setBackground(purple);
+         this.loop.setBackground(purple);
+         this.bottom.setBackground(purple);
+         this.center.setBackground(purple);
+          this.playBackToolBar.setBackground(purple);
+         this.volumeToolBar.setBackground(purple);
+         this.lyricsButton.setBackground(purple);
+         this.muteButton.setBackground(purple);
+         this.nextButton.setBackground(purple);
+         this.play_pause_Button.setBackground(purple);
+         this.previousButton.setBackground(purple);
+         this.progressBar.setBackground(purple);
+         this.progressBar.setForeground(Color.darkGray);
+         this.right.setBackground(purple);
+         this.songLabel.setBackground(purple);
+         this.songLabel.setForeground(Color.darkGray);
+         this.top.setBackground(purple);
+         this.volumeDownButton.setBackground(purple);
+         this.volumeUpButton.setBackground(purple);
+         ImageIcon originalIcon = new ImageIcon("Icons\\lyrics_dark.png");
+        lyricsButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        if(paused)        
+            originalIcon = new ImageIcon("Icons\\play_dark.png");
+        else
+            originalIcon = new ImageIcon("Icons\\pause_dark.png");
+        play_pause_Button.setIcon(resizeIcon(originalIcon,60,60));         
+        originalIcon = new ImageIcon("Icons\\volume_up_dark.png");
+        volumeUpButton.setIcon(resizeIcon(originalIcon,40,40));
+        originalIcon = new ImageIcon("Icons\\volume_down_dark.png");
+        volumeDownButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\previous_dark.png");
+        previousButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\next_dark.png");
+        nextButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\mute_dark.png");
+        muteButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\loop_dark.png");
+        loop.setIcon(resizeIcon(originalIcon,30,30)); 
+        
+     }
+     public void setDarkMode(boolean paused)
+     {
+         this.frame.setBackground(Color.darkGray);
+         this.like.setBackground(Color.darkGray);
+         this.loop.setBackground(Color.darkGray);
+          this.bottom.setBackground(Color.darkGray);
+           this.center.setBackground(Color.darkGray);
+          this.playBackToolBar.setBackground(Color.darkGray);
+         this.volumeToolBar.setBackground(Color.darkGray);
+         this.lyricsButton.setBackground(Color.darkGray);
+         this.muteButton.setBackground(Color.darkGray);
+         this.nextButton.setBackground(Color.darkGray);
+         this.songLabel.setForeground(purple);
+         this.play_pause_Button.setBackground(Color.darkGray);
+         this.previousButton.setBackground(Color.darkGray);
+         this.progressBar.setBackground(Color.darkGray);
+         this.progressBar.setForeground(purple);
+         this.right.setBackground(Color.darkGray);
+         this.songLabel.setBackground(Color.darkGray);
+         this.top.setBackground(Color.darkGray);
+         this.volumeDownButton.setBackground(Color.darkGray);
+         this.volumeUpButton.setBackground(Color.darkGray);
+         ImageIcon originalIcon = new ImageIcon("Icons\\lyrics_light.png");
+        lyricsButton.setIcon(resizeIcon(originalIcon,40,40));         
+        if(paused)        
+            originalIcon = new ImageIcon("Icons\\play_light.png");
+        else
+            originalIcon = new ImageIcon("Icons\\pause_light.png");
+        play_pause_Button.setIcon(resizeIcon(originalIcon,60,60));
+        originalIcon = new ImageIcon("Icons\\volume_up_light.png");
+        volumeUpButton.setIcon(resizeIcon(originalIcon,40,40));
+        originalIcon = new ImageIcon("Icons\\volume_down_light.png");
+        volumeDownButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\previous_light.png");
+        previousButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\next_light.png");
+        nextButton.setIcon(resizeIcon(originalIcon,40,40)); 
+        originalIcon = new ImageIcon("Icons\\mute_light.png");
+        muteButton.setIcon(resizeIcon(originalIcon,40,40)); 
+       originalIcon = new ImageIcon("Icons\\loop_light.png");
+        loop.setIcon(resizeIcon(originalIcon,30,30)); 
+        
+     }
      public void setSong(String s)
      {
          songLabel.setText(s);
@@ -88,10 +180,14 @@ public class Player_V {
      public JFrame getFrame(){
          return frame;
      }
+     public void setWindowListener(WindowAdapter a){
+         frame.addWindowListener(a);
+     }
      public void progressAdd()
      {
          int n=progressBar.getValue();
          progressBar.setValue(++n);
+         System.out.println("progress="+n+" "+progressBar.getMaximum());
      }
      public  void likedListener(ActionListener a)
      {
@@ -113,7 +209,6 @@ public class Player_V {
     public Player_V() {
         
         frame = new JFrame("MP3 Player");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playBackToolBar = new JToolBar();
         volumeToolBar=new JToolBar(JToolBar.VERTICAL);
         playBackToolBar.setBounds(0, 0, 500, 100);
@@ -139,10 +234,8 @@ public class Player_V {
         //muteButton.setBackground(new Color(0,0,0));
         progressBar = new JProgressBar();
         songLabel = new JLabel();
-        JPanel top=new JPanel();
-        JPanel right=new JPanel();
+        songLabel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 15));
         top.add(songLabel);
-        JPanel bottom=new JPanel();
         //playBackToolBar.setBackground(new Color(0,0,0));
         bottom.setLayout(new BoxLayout(bottom,BoxLayout.Y_AXIS));
         playBackToolBar.add(loop);
@@ -166,6 +259,7 @@ public class Player_V {
         frame.add(right,BorderLayout.EAST);
         frame.add(top,BorderLayout.NORTH);
         frame.add(bottom,BorderLayout.SOUTH);
+        frame.add(center,BorderLayout.CENTER);
         frame.setResizable(false);
         frame.setSize(600, 500);
         frame.setVisible(true);

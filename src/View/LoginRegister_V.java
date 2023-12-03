@@ -24,12 +24,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  *
  * @author Dell
  */
 public class LoginRegister_V extends JPanel{
+    
+    private Color purple=new Color(192, 188, 219);
     JFrame frame=new JFrame("Register an Account");
     JPanel loginPanel;
     JPanel registerPanel;
@@ -52,7 +55,7 @@ public class LoginRegister_V extends JPanel{
         registerPanel=new JPanel();
         mainPanel=new JPanel();
         layout=new CardLayout();
-        pageLabel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 34));
+        pageLabel.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 34));
         password.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
         username.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
         passwordLogin.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 17));
@@ -68,6 +71,13 @@ public class LoginRegister_V extends JPanel{
         this.setLayout(new BorderLayout());
         JPanel p=new JPanel(new FlowLayout(FlowLayout.LEFT));
         this.back=back;
+        back.setBackground(purple);
+        loginPanel.setBackground(purple);
+        registerPanel.setBackground(purple);
+        mainPanel.setBackground(purple);
+        pageLabel.setBackground(purple);
+        password.setBackground(purple);
+        username.setBackground(purple);
         p.add(back);
         this.add(p,BorderLayout.NORTH);
         this.add(mainPanel,BorderLayout.CENTER);
@@ -108,12 +118,18 @@ public class LoginRegister_V extends JPanel{
     {
         layout.show(mainPanel, "register");
     }
+    
     public void readyLoginPanel(){
         loginPanel.removeAll();
         loginPanel.add(Box.createRigidArea(new Dimension(0,30)));
-        loginPanel.add(pageLabel);
+        JPanel labelPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        labelPanel.setBackground(purple);
+        pageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         pageLabel.setText("Log In");
+        labelPanel.add(pageLabel);
+        loginPanel.add(labelPanel);
         JPanel p= new JPanel(new FlowLayout(FlowLayout.LEFT));
+        p.setBackground(purple);
         p.add(username);
         userField.setText("");
         p.add(userField);
@@ -123,12 +139,14 @@ public class LoginRegister_V extends JPanel{
         p= new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(password);
         p.add(passwordLogin);
+        p.setBackground(purple);
         passwordLogin.setText("");
         loginPanel.add(p);
         loginPanel.add(Box.createRigidArea(new Dimension(0,15)));
         p= new JPanel(new FlowLayout(FlowLayout.CENTER));
         p.add(submitLogin);
         p.add(gotoRegister);
+        p.setBackground(purple);
         loginPanel.add(p);
         submitLogin.setEnabled(false);
     
@@ -161,11 +179,16 @@ public class LoginRegister_V extends JPanel{
         
         registerPanel.removeAll();
         registerPanel.add(Box.createRigidArea(new Dimension(0,30)));
-        registerPanel.add(pageLabel);
+        JPanel labelPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        labelPanel.setBackground(purple);
+        pageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         pageLabel.setText("Register");
+        labelPanel.add(pageLabel);
+        registerPanel.add(labelPanel);
         JPanel p= new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(username);
         p.add(userField);
+        p.setBackground(purple);
         userField.setText("");
         p.add(userField);
         registerPanel.add(Box.createRigidArea(new Dimension(0,30)));
@@ -173,10 +196,12 @@ public class LoginRegister_V extends JPanel{
         registerPanel.add(Box.createRigidArea(new Dimension(0,15)));
         p= new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(password);
+        p.setBackground(purple);
         p.add(passwordRegister);
         registerPanel.add(p);
         registerPanel.add(Box.createRigidArea(new Dimension(0,15)));
         p= new JPanel(new FlowLayout(FlowLayout.CENTER));
+        p.setBackground(purple);
         p.add(submitRegister);
         submitRegister.setEnabled(false);
         p.add(gotoLogin);

@@ -6,6 +6,7 @@ package Controller;
 
 import Model.AllSongs_M;
 import Model.Database_M;
+import Model.Mode_M;
 import Model.PlayList_M;
 import Model.Player_M;
 import Model.Song_M;
@@ -44,6 +45,10 @@ public class PlayListManage_C {
         allSongs=AllSongs_M.getAllSongs();
         playlist=pl;
         playlistDisplay=pV;
+        if(Mode_M.getMode())
+            playlistDisplay.setLightMode();
+        else
+            playlistDisplay.setDarkMode();
         playlistDisplay.setPlaylistName(playlist.getPlayListName());
        playlistDisplay.setToggle(new ItemListener() {
         @Override
@@ -58,7 +63,7 @@ public class PlayListManage_C {
                     else
                     present[i]=true;
                 }
-            playlistDisplay.editingPanel(songInfo,present);
+            playlistDisplay.editingPanel(songInfo,present,Mode_M.getMode());
             layout.show(playlistDisplay.getCardPanel(), "Enabled");
          
             } else {
@@ -91,7 +96,7 @@ public class PlayListManage_C {
                     }
                     System.out.println("PRINTING NEW TABLE'S INFO");
                     String[][] son=playlist.getSongsData();
-                    playlistDisplay.populateTable(son);
+                    playlistDisplay.populateTable(son,Mode_M.getMode());
                     for(int i=0;i<son.length;i++){
                         System.out.println(son[i][0]);
                     }
@@ -100,7 +105,7 @@ public class PlayListManage_C {
             }
         });
         String[][] songInfo=playlist.getSongsData();
-        playlistDisplay.populateTable(songInfo);
+        playlistDisplay.populateTable(songInfo,Mode_M.getMode());
         playlistDisplay.setTableActionListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
