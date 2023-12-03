@@ -59,6 +59,7 @@ public class LoggedInHome_V {
     JButton newPlaylist=new JButton("New list");
     JLabel person=new JLabel("user");
     JPanel bottomPanel=new JPanel();
+    JButton logOut=new JButton("Log out");
     JButton customizeButton=new JButton();
     ActionListener playlistButtonListener;
     HashSet<String> playlistNames;
@@ -94,6 +95,7 @@ public class LoggedInHome_V {
         customizeButton.setIcon(resizeIcon(originalIcon,50,50));
         
         bottomPanel.add(customizeButton);
+        bottomPanel.add(logOut);
         person.setSize( 70, 30);
         mainPanel.add(toolBar,BorderLayout.NORTH);
         mainPanel.add(scroll,BorderLayout.CENTER);
@@ -107,11 +109,15 @@ public class LoggedInHome_V {
         container.add(historyPanel, "History");
         container.add(likedPanel, "Liked");
         frame.setVisible(true);
-        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public void addPanelToHome(JPanel panel)
     {
         container.add(panel,"playlist");
+    }
+    public void addLogOutListener(ActionListener a)
+    {
+        logOut.addActionListener(a);
     }
     public void showAddedPanel()
     {

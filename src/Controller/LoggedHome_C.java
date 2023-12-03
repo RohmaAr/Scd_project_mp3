@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Iterator;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
@@ -80,6 +81,12 @@ public class LoggedHome_C {
                 home.voluntaryBack();
                 }
            }
+        });
+        home.addLogOutListener(e->{
+           home.getFrame().dispose();
+           if(displayPlaylist!=null)
+           displayPlaylist.disposePlayerFrame();
+           new AllHome_C();
         });
         home.readyCreate(allSongs.getSongsData());
         home.backListener(new ActionListener(){
