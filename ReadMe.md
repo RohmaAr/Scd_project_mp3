@@ -14,7 +14,7 @@ Clone or download the myTunes project from the repository.
 Add Jar Files:
 
 Navigate to the lib folder in the project.
-Add the necessary JAR files (e.g., javax.swing.jar, httpclient, jlayer.jar, etc.) to your project's build path.
+Add the necessary JAR files (e.g., javax.swing.jar,jaco-mp3-player-0.9.3, httpclient, jlayer.jar, etc.) to your project's build path.
 Model Configuration:
 
 Locate the AllSounds_M file in the model folder.
