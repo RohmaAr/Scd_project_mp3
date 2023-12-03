@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -63,7 +64,15 @@ public class NonUserHome_V {
         mainPanel.setLayout(layout);
         mainPanel.add(allsongPanel,"allSongs");
         this.goToAllSongs();
-        frame.add(mainPanel); 
+        frame.add(mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    public JFrame getFrame(){
+        return frame;
+    }
+    public void setClosingWindowAdapter(WindowAdapter w)
+    {
+        frame.addWindowListener(w);
     }
     public JButton getBackButton()
      {

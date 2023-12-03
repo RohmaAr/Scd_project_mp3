@@ -12,6 +12,9 @@ import View.NonUserHome_V;
 import View.Player_V;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 
 
@@ -58,7 +61,11 @@ public class AllHome_C {
         home.setLoginRegisterListener(e->{
             
             logReg=new LoginRegister_V(home.getBackButton());
-            conLog=new LoginRegister_C(logReg); 
+            conLog=new LoginRegister_C(logReg,home.getFrame()); 
+            if(player!=null && !player.isPaused())
+                player.pause();
+            if(playScreen!=null)
+                playScreen.getFrame().dispose();
             home.addLoginPanel(logReg);
             home.goToLoginReg();
         });

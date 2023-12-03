@@ -30,7 +30,8 @@ public class Player_C {
     Player_M player;
     Player_V playerScreen; 
     FrontEnd frontEnd;//for lyrics front end by fatima
-        int i = 1;
+    private SwingWorker<Void, Void> songProgressWorker;    
+    int i = 1;
     public Player_C(User_M user,Player_V p,Player_M pm)
     {
         Database_M db=Database_M.getDatabaseConnection();
@@ -106,40 +107,22 @@ public class Player_C {
                 if(player.isPaused()){
                 player.play();
                 playerScreen.pausePlayIconChange("Icons\\pause_dark.png");
-                    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-    @Override
-    protected Void doInBackground() throws Exception {
-        int dura=player.getDuration();
-        playerScreen.progressSetMax(dura);
-        
-        for (; i <= dura && !player.isPaused(); i++) {
-            try {
-                Thread.sleep(1000);
-                publish();
-                } catch (InterruptedException ex) {
-                Logger.getLogger(Player_C.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            return null;
-            }
-
-            @Override
-            protected void process(List<Void> chunks) {
-            playerScreen.progressAdd();
-            }
-
-                };
-                sw.execute();
-            
+                  if (songProgressWorker == null || songProgressWorker.isCancelled()) {
+                        songProgressWorker = createSongProgressWorker();
+                        songProgressWorker.execute();
+                    }
                 }else
                 {
                     player.pause();
                 playerScreen.pausePlayIconChange("Icons\\play_dark.png");
-                
+                  if (songProgressWorker != null && !songProgressWorker.isCancelled()) {
+                        songProgressWorker.cancel(true);
+                    }
                 }
             }
             
         });
+        playerScreen.clickPlayPause();
         playerScreen.previousListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -192,5 +175,31 @@ public class Player_C {
             
         });
         
+    }
+    private SwingWorker<Void, Void> createSongProgressWorker() {
+        return new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                while(true){
+                int dura = player.getDuration();
+                playerScreen.progressSetMax(dura);
+
+                for (; i <= player.getDuration() && !player.isPaused() && !isCancelled(); i++) {
+                    try {
+                        Thread.sleep(1000);
+                        publish();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Player_C.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                }
+                //return null;
+            }
+
+            @Override
+            protected void process(List<Void> chunks) {
+                playerScreen.progressAdd();
+            }
+        };
     }
 }

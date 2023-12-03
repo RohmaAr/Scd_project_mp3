@@ -21,6 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Iterator;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 /**
@@ -133,5 +134,19 @@ public class PlayListManage_C {
                new LoggedHome_C(user);
            }
         });
+    }
+    public void disposePlayerFrame()
+    {
+        if(player!=null && !player.isPaused())
+        {
+            System.out.println("Pausing");
+            player.pause();
+        }
+            
+        if(playScreen!=null){
+            System.out.println("Disposing frame");
+            playScreen.getFrame().dispose();
+        
+        }
     }
 }

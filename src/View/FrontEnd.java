@@ -27,7 +27,6 @@ public class FrontEnd {
         }
 
         JFrame frame = new JFrame("Lyrics Fetcher");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
 

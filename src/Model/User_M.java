@@ -14,12 +14,14 @@ import java.util.HashSet;
 public class User_M {
     String name;
     String password;
-    PlayList_M likedSongs;
+    PlayList_M likedSongs=new PlayList_M();;
     ArrayList<String> history;
     ArrayList<PlayList_M> playlists;
     public User_M(String n,String p){
         name=n;
         password=p;
+        likedSongs.setPlayListName(name+"'s liked songs");
+           
     }
     public HashSet getAllPlaylistNames(){
         if(playlists==null || playlists.isEmpty())
@@ -52,9 +54,8 @@ public class User_M {
     }
     public void addToLikedSongs(Song_M s)
     {
-        if(likedSongs==null){
-            likedSongs=new PlayList_M();
-        }
+            
+        System.out.println(likedSongs.getPlayListName());
         likedSongs.addToPlaylist(s);
     }
     public void removedFromLiked(Song_M s)

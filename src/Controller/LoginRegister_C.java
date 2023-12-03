@@ -15,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,8 +28,10 @@ public class LoginRegister_C {
     LoggedHome_C home;
     Database_M database;
     AllSongs_M allSongs;
-    public LoginRegister_C(LoginRegister_V logPanel)
+    JFrame frame;
+    public LoginRegister_C(LoginRegister_V logPanel,JFrame frame)
     {
+        this.frame=frame;
         database=Database_M.getDatabaseConnection();
         allSongs=allSongs.getAllSongs();
         logRegV=logPanel;
@@ -116,6 +119,7 @@ public class LoginRegister_C {
                             user.addToLikedSongs(allSongs.getSongOrDont(namesArray.get(i)));
                         }
                     }
+                    frame.dispose();
                     home=new LoggedHome_C(user);
                 }
             }
@@ -137,7 +141,8 @@ public class LoginRegister_C {
                     
                     database.dbPutAllSongsInDb(allSongs.getSongsData());
                     user=new User_M(username,password);
-                   home=new LoggedHome_C(user);
+                    frame.dispose();
+                    home=new LoggedHome_C(user);
                 }
                 
             }
